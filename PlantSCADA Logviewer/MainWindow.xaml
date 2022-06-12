@@ -1,0 +1,81 @@
+﻿<Window x:Class="PlantSCADA_Logviewer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PlantSCADA_Logviewer"
+        mc:Ignorable="d"
+        Title="Plant SCADA log viewer"
+        Height="450"
+        Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80" />
+            <RowDefinition Height="80" />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.Resources>
+            <Style TargetType="StackPanel"
+                   x:Key="DateBox">
+                <Setter Property="HorizontalAlignment"
+                        Value="Center" />
+                <Setter Property="VerticalAlignment"
+                        Value="Center" />
+            </Style>
+        </Grid.Resources>
+        <TextBox Name="tb_logsPath"
+                 Grid.Row="0"
+                 Grid.ColumnSpan="3"
+                 Grid.Column="0"
+                 TextAlignment="Center"
+                 VerticalContentAlignment="Center"
+                 Margin="15">Path</TextBox>
+        <Button Grid.Row="0"
+                Grid.Column="3"
+                Name="btn_Browse"
+                Margin="15">Browse</Button>
+        <StackPanel Grid.Row="1"
+                    Grid.Column="0"
+                    Style="{StaticResource DateBox}">
+            <TextBlock>Date Start</TextBlock>
+            <DatePickerTextBox Name="dp_dateStart">01/01/1900</DatePickerTextBox>
+        </StackPanel>
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1"
+                    Style="{StaticResource DateBox}">
+            <TextBlock>Date End</TextBlock>
+            <DatePickerTextBox Name="dp_dateEnd">31/12/2100</DatePickerTextBox>
+        </StackPanel>
+        <StackPanel Grid.Row="1"
+                    Grid.Column="2"
+                    Margin="3,0,3,0">
+            <Button>Last hour</Button>
+            <Button>Last 6 hours</Button>
+            <Button>Last 24 hours</Button>
+            <Button>Last week</Button>
+            <Button>Last month</Button>
+        </StackPanel>
+        <Button Grid.Row="1"
+                Grid.Column="3"
+                Margin="15"
+                Name="btn_Set">
+            Set
+        </Button>
+        <TreeView Name="tv_components"
+                  Grid.Row="2"
+                  Grid.Column="0"
+                  Grid.RowSpan="2"></TreeView>
+        <TabControl Name="tbc_openedFiles"
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Grid.RowSpan="2"
+                    Grid.ColumnSpan="3" />
+    </Grid>
+</Window>
