@@ -4,8 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PlantSCADA_Logviewer"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="Plant SCADA log viewer"
+        d:DataContext="{d:DesignInstance local:MainViewModel, IsDesignTimeCreatable=True}"
         Height="450"
         Width="800">
     <Grid>
@@ -31,12 +33,13 @@
             </Style>
         </Grid.Resources>
         <TextBox Name="tb_logsPath"
+                 Text="{Binding LogsPath}"
                  Grid.Row="0"
                  Grid.ColumnSpan="3"
                  Grid.Column="0"
                  TextAlignment="Center"
                  VerticalContentAlignment="Center"
-                 Margin="15">Path</TextBox>
+                 Margin="15" />
         <Button Grid.Row="0"
                 Grid.Column="3"
                 Name="btn_Browse"
@@ -45,22 +48,47 @@
                     Grid.Column="0"
                     Style="{StaticResource DateBox}">
             <TextBlock>Date Start</TextBlock>
-            <DatePickerTextBox Name="dp_dateStart">01/01/1900</DatePickerTextBox>
+            <DatePickerTextBox Name="dp_dateStart"
+                               Text="{Binding FilterTime.DateStart}" />
         </StackPanel>
         <StackPanel Grid.Row="1"
                     Grid.Column="1"
                     Style="{StaticResource DateBox}">
             <TextBlock>Date End</TextBlock>
-            <DatePickerTextBox Name="dp_dateEnd">31/12/2100</DatePickerTextBox>
+            <DatePickerTextBox Name="dp_dateEnd"
+                               Text="{Binding FilterTime.DateEnd}" />
+
+
         </StackPanel>
         <StackPanel Grid.Row="1"
                     Grid.Column="2"
                     Margin="3,0,3,0">
-            <Button>Last hour</Button>
-            <Button>Last 6 hours</Button>
-            <Button>Last 24 hours</Button>
-            <Button>Last week</Button>
-            <Button>Last month</Button>
+            <Button Command="{Binding FilterSetup}">
+                <Button.CommandParameter>
+                    <sys:Int32>1</sys:Int32>
+                </Button.CommandParameter>
+                Last hour</Button>
+            <Button Command="{Binding FilterSetup}">
+                <Button.CommandParameter>
+                    <sys:Int32>6</sys:Int32>
+                </Button.CommandParameter>
+                
+                Last 6 hours</Button>
+            <Button Command="{Binding FilterSetup}"
+                    >
+                <Button.CommandParameter>
+                    <sys:Int32>24</sys:Int32>
+                </Button.CommandParameter> Last 24 hours</Button>
+            <Button Command="{Binding FilterSetup}">
+                <Button.CommandParameter>
+                    <sys:Int32>168</sys:Int32>
+                </Button.CommandParameter>
+                Last 7 days</Button>
+            <Button Command="{Binding FilterSetup}">
+                <Button.CommandParameter>
+                    <sys:Int32>720</sys:Int32>
+                </Button.CommandParameter>
+                Last 30 days</Button>
         </StackPanel>
         <Button Grid.Row="1"
                 Grid.Column="3"
@@ -76,6 +104,14 @@
                     Grid.Row="2"
                     Grid.Column="1"
                     Grid.RowSpan="2"
-                    Grid.ColumnSpan="3" />
+                    Grid.ColumnSpan="3">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <DataGrid></DataGrid>
+                    </StackPanel>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+        </TabControl>
     </Grid>
 </Window>

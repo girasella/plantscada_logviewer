@@ -23,6 +23,7 @@ namespace PlantSCADA_Logviewer
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainViewModel();
         }
     }
 }

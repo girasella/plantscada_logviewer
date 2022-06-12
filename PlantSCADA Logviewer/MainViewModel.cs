@@ -4,12 +4,24 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace PlantSCADA_Logviewer
 {
     internal class MainViewModel : ViewModelBase
     {
-        string _logsPath;
+
+        public MainViewModel()
+        {
+            FilterTime = new TimeFilter();
+            FilterSetup = new DelegateCommand<int>((par) => FilterTime.FilterFromNow(par));
+            LogsPath = "C:\\ProgramData\\Aveva\\Citect SCADA 2018 R2\\Logs";
+        }
+        string _logsPath="";
+
+        TimeFilter _filterTime;
+
+        ICommand _filterSetup;
 
         public string LogsPath
         {
@@ -19,9 +31,21 @@ namespace PlantSCADA_Logviewer
             }
             set { 
                 _logsPath = value; 
-                OnPropertyChanged();
-            
+                OnPropertyChanged();            
             }
         }
+
+        public TimeFilter FilterTime
+        {
+            get { return _filterTime; }
+
+            set { 
+                _filterTime = value;
+                OnPropertyChanged(); 
+            }
+
+        }
+
+        public ICommand FilterSetup { get => _filterSetup; set => _filterSetup = value; }
     }
 }
