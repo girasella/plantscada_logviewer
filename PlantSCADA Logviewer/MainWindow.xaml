@@ -99,7 +99,9 @@
         <TreeView Name="tv_components"
                   Grid.Row="2"
                   Grid.Column="0"
-                  Grid.RowSpan="2"></TreeView>
+                  Grid.RowSpan="2"
+                  ItemsSource="{Binding TreeElems}">
+        </TreeView>
         <TabControl Name="tbc_openedFiles"
                     Grid.Row="2"
                     Grid.Column="1"

@@ -19,6 +19,8 @@ namespace PlantSCADA_Logviewer
         }
         string _logsPath="";
 
+        List<INodeLog> _treeElems;
+
         TimeFilter _filterTime;
 
         ICommand _filterSetup;
@@ -47,5 +49,8 @@ namespace PlantSCADA_Logviewer
         }
 
         public ICommand FilterSetup { get => _filterSetup; set => _filterSetup = value; }
+        internal List<INodeLog> TreeElems { get => _treeElems; set => _treeElems = value; }
+
+
     }
 }
