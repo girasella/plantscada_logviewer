@@ -10,7 +10,10 @@ namespace PlantSCADA_Logviewer
     {
         string _name;
 
-        
+        public LogView(string name)
+        {
+            Name = name;
+        }
 
         public string Name
         {

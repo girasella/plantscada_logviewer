@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PlantSCADA_Logviewer
 {
-    internal interface INodeLog
+    public interface INodeLog : INotifyPropertyChanged
     {
         public string Name { get; set; }
 
@@ -20,5 +21,10 @@ namespace PlantSCADA_Logviewer
         {
             Children.Remove(child);
         }       
+
+       public string ToString()
+        {
+            return Name;
+        }
     }
 }

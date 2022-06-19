@@ -12,7 +12,15 @@ namespace PlantSCADA_Logviewer
 
 
         List<INodeLog> _logComponents;
-        public string Name { get => _name; set => _name = value; }
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                OnPropertyChanged();
+            }
+        }
         public List<INodeLog> Children { get => _logComponents; set => _logComponents = value; }
 
         public LogCluster(string name)
@@ -25,6 +33,12 @@ namespace PlantSCADA_Logviewer
         {
             Name = "LogCluster Example";
             Children = new List<INodeLog>();
+        }
+
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

@@ -99,17 +99,26 @@
         <TreeView Name="tv_components"
                   Grid.Row="2"
                   Grid.Column="0"
-                  Grid.RowSpan="2"
+                  Grid.RowSpan="2"  
                   ItemsSource="{Binding TreeElems}">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}"
+                                          DataType="{x:Type local:INodeLog}">
+                    <TreeViewItem Header="{Binding Name}" />
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
         </TreeView>
         <TabControl Name="tbc_openedFiles"
                     Grid.Row="2"
                     Grid.Column="1"
                     Grid.RowSpan="2"
-                    Grid.ColumnSpan="3">
-            <TabControl.ItemTemplate>
+                    Grid.ColumnSpan="3"
+                    ItemsSource="{Binding LogViews}"
+                    >
+            <TabControl.ItemTemplate>                
                 <DataTemplate>
                     <StackPanel>
+                        <TextBlock Text="{Binding Name}" />
                         <DataGrid></DataGrid>
                     </StackPanel>
                 </DataTemplate>
