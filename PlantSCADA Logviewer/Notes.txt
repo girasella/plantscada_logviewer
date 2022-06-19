@@ -1,0 +1,6 @@
+﻿Hierarchy:
+
+Cluster
+Component (Alarm, Trend, IO, Client, etc)
+Group (sys, trace, debug, etc)
+File 

@@ -22,7 +22,12 @@ namespace PlantSCADA_Logviewer
             Name = name;
             Type = type;
             LogFiles = new List<LogFile>();
-
+        }
+        public LogGroup()
+        {
+            Name = "Sys";
+            Type = LogType.Sys;
+            LogFiles = new List<LogFile>();
         }
 
     }

@@ -12,7 +12,7 @@ public class LogTypeDictionary
 {
     static Dictionary<string, LogType> _logTypeDict = new Dictionary<string, LogType>()
     {
-        {"syslog", LogType.sys },
+        {"syslog", LogType.Sys },
         {"tracelog", LogType.Trace },
         {"debug", LogType.Debug },
         {"reloadlog", LogType.Reload },
