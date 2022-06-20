@@ -21,5 +21,8 @@ public class LogTypeDictionary
     };
 
 
-
+    public static LogType? GetLogType(string par)
+    {
+        return _logTypeDict.ContainsKey(par) ? _logTypeDict[par] : null;
+    }
 }

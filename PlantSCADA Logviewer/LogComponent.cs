@@ -8,11 +8,12 @@ namespace PlantSCADA_Logviewer
 {
     internal class LogComponent : ViewModelBase, INodeLog
     {
-       public LogComponent(string name, List<LogGroup> logGroups)
+
+        public LogComponent(string name, ComponentType type)
         {
             Name = name;
+            Type = type;
             Children = new List<INodeLog>();
-            Children.AddRange(logGroups);
         }
 
         public LogComponent()

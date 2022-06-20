@@ -15,7 +15,12 @@ namespace PlantSCADA_Logviewer
             FileName = fname; 
             _file = new FileInfo(fname);
         }
-        
+        public LogFile(FileInfo file)
+        {
+            FileName = file.FullName;
+            _file = file;
+        }
+
         string _fileName;
         DateTime _start, _end;
 

@@ -19,5 +19,8 @@ public static class ComponentDictionary
         {"report", ComponentType.Report }
     };
 
-
+    public static ComponentType? GetComponent (string name)
+    {
+        return _componentDict.ContainsKey(name) ? _componentDict[name] : null;
+    }
 }
