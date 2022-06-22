@@ -43,6 +43,7 @@
         <Button Grid.Row="0"
                 Grid.Column="3"
                 Name="btn_Browse"
+                Command="{Binding BrowseFolders}"
                 Margin="15">Browse</Button>
         <StackPanel Grid.Row="1"
                     Grid.Column="0"
@@ -50,6 +51,7 @@
             <TextBlock>Date Start</TextBlock>
             <DatePickerTextBox Name="dp_dateStart"
                                Text="{Binding FilterTime.DateStart}" />
+            
         </StackPanel>
         <StackPanel Grid.Row="1"
                     Grid.Column="1"

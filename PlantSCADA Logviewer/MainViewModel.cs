@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Forms;
 
 namespace PlantSCADA_Logviewer
 {
@@ -37,17 +38,15 @@ namespace PlantSCADA_Logviewer
             TreeElems = new ObservableCollection<INodeLog>();
         }
 
-
         string _logsPath="";
 
         ObservableCollection<INodeLog> _treeElems;
 
         TimeFilter _filterTime;
 
-        ICommand _filterSetup, _setTree;
+        ICommand _filterSetup, _setTree, _browseFolders;
 
         ObservableCollection<LogView> _logViews;
-
 
 
         public ObservableCollection<LogView> LogViews
@@ -98,8 +97,21 @@ namespace PlantSCADA_Logviewer
         public ICommand SetTree { 
             get => _setTree; 
             set => _setTree = value; }
+        public ICommand BrowseFolders { get => _browseFolders; set => _browseFolders = value; }
 
-        public void ScanLogDirectory (string logDir)
+
+        void BrowseDirs()
+        {
+            var dialog = new FolderBrowserDialog();
+
+            DialogResult result = dialog.ShowDialog();
+
+            if (result == DialogResult.OK) 
+                LogsPath = dialog.SelectedPath;
+
+        }
+
+        void ScanLogDirectory (string logDir)
         {
             DirectoryInfo logsDirectory = new DirectoryInfo(logDir);
             Dictionary<string, LogCluster> clusterMap = new Dictionary<string, LogCluster>();
@@ -183,6 +195,7 @@ namespace PlantSCADA_Logviewer
         {
             FilterSetup = new DelegateCommand<int>((par) => FilterTime.FilterFromNow(par));
             SetTree = new DelegateCommand(() => ScanLogDirectory(LogsPath));
+            BrowseFolders = new DelegateCommand(() => BrowseDirs());
         }
     }
 }

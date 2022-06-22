@@ -6,6 +6,7 @@
     <RootNamespace>PlantSCADA_Logviewer</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>True</UseWindowsForms>
   </PropertyGroup>
 
 </Project>
