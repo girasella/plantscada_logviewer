@@ -93,7 +93,8 @@
         <Button Grid.Row="1"
                 Grid.Column="3"
                 Margin="15"
-                Name="btn_Set">
+                Name="btn_Set"
+                Command="{Binding SetTree}">
             Set
         </Button>
         <TreeView Name="tv_components"

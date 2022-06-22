@@ -21,6 +21,9 @@ namespace PlantSCADA_Logviewer
             Name = "LogComponent Example ";
             Children = new List<INodeLog>();
         }
+
+
+
         ComponentType _type;
         string _name;
         List<INodeLog> _logGroups;
