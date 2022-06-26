@@ -197,5 +197,15 @@ namespace PlantSCADA_Logviewer
             SetTree = new DelegateCommand(() => ScanLogDirectory(LogsPath));
             BrowseFolders = new DelegateCommand(() => BrowseDirs());
         }
+    
+    
+        private void AddToLogViews(LogGroup logGroup, DateTime start, DateTime end)
+        {
+            LogView lv = new LogView("Tab" + new Random(1).ToString(),logGroup.Load(start, end));
+
+            LogViews.Add(lv);
+
+        }
+    
     }
 }

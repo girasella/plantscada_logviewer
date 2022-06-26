@@ -30,5 +30,22 @@ namespace PlantSCADA_Logviewer
             LogFiles = new List<LogFile>();
         }
 
+        public List<LogEntry> Load(DateTime start, DateTime end)
+        {
+            List<LogEntry> logEntries = new List<LogEntry>();
+
+            foreach (var file in LogFiles)
+            {
+                var entries = file.Load(start, end);
+
+                logEntries.AddRange(entries);
+
+            }
+
+            return logEntries;
+
+
+        }
+
     }
 }

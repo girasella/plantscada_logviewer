@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace PlantSCADA_Logviewer
 {
-    internal class LogView : List<LogRecord>
+    internal class LogView : List<LogEntry>
     {
         string _name;
 
         public LogView(string name)
+        {
+            Name = name;
+        }
+
+        public LogView(string name, IEnumerable<LogEntry> collection) : base(collection)
         {
             Name = name;
         }
