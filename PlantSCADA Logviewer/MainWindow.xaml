@@ -107,7 +107,18 @@
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Children}"
                                           DataType="{x:Type local:INodeLog}">
-                    <TreeViewItem Header="{Binding Name}" />
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Add to Current View"  />
+                                <MenuItem Header="Add to new View" Command="{Binding AddToNewView}" />
+                            </ContextMenu>
+                        </StackPanel.ContextMenu>
+                        <TextBlock Text="o  "></TextBlock>
+                        <TextBlock Text="{Binding Name}" />
+                    </StackPanel>
+
+                 
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
