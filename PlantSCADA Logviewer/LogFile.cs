@@ -12,13 +12,13 @@ namespace PlantSCADA_Logviewer
     {
         FileInfo _file;
         List<LogEntry> _logEntries;
-        string _source;
+        LogGroup _source;
 
-        public LogFile(FileInfo file, string src="")
+        public LogFile(FileInfo file, LogGroup logGroup)
         {
             FileName = file.FullName;
             _file = file;
-            Source = src;      
+            Source = logGroup;      
             
         }
 
@@ -40,11 +40,11 @@ namespace PlantSCADA_Logviewer
 
             foreach(string line in lines)
             {
-                string dateString = line.Substring(0, 31);
+                string dateString = line.Substring(0, 30);
 
                 DateTime dt;
 
-                if (!DateTime.TryParseExact(dateString, "yyyy-MM-dd HH:mm:ss.fff\tzzz\t", CultureInfo.CurrentUICulture, DateTimeStyles.None, out dt))
+                if (!DateTime.TryParseExact(dateString, "yyyy-MM-dd HH:mm:ss.fff\tzzz", CultureInfo.CurrentUICulture, DateTimeStyles.None, out dt))
                     continue;
 
                 retValue.Add(new LogEntry(dt, line.Substring(31, line.Length - 31),this.Source));
@@ -60,6 +60,6 @@ namespace PlantSCADA_Logviewer
         public string FileName { get => _fileName; set => _fileName = value; }
         public DateTime Start { get => _start; set => _start = value; }
         public DateTime End { get => _end; set => _end = value; }
-        public string Source { get => _source; set => _source = value; }
+        public LogGroup Source { get => _source; set => _source = value; }
     }
 }

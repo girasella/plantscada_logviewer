@@ -91,7 +91,7 @@ namespace PlantSCADA_Logviewer
                 }
                 else
                 {
-                    MainViewModel.Instance.LogViewer.Clear();
+                    MainViewModel.Instance.LogViewer.RemoveAll(x => x.SourceNode == this);
                 }
                 
                 _selected = value;

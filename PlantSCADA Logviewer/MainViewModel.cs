@@ -173,7 +173,7 @@ namespace PlantSCADA_Logviewer
                         cGroup = new LogGroup(logGroupType, (LogType)lType,clientComponent);
                         clientComponent.Children.Add(cGroup);
                     }
-                    LogFile lgFile = new LogFile(file, cGroup.SourcePath);
+                    LogFile lgFile = new LogFile(file, cGroup);
                     cGroup.LogFiles.Add(lgFile);
                     continue;
                 }                
@@ -208,7 +208,7 @@ namespace PlantSCADA_Logviewer
                     currentGroup = new LogGroup(logGroupType, (LogType)lType,currentComponent);
                     currentComponent.Children.Add(currentGroup);
                 }
-                LogFile lFile = new LogFile(file,currentGroup.SourcePath);
+                LogFile lFile = new LogFile(file,currentGroup);
                 currentGroup.LogFiles.Add(lFile);
             }
 
