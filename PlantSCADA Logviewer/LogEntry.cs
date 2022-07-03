@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PlantSCADA_Logviewer
 {
-    internal class LogEntry : ViewModelBase, IComparer<LogEntry>
+    internal class LogEntry : ViewModelBase, IComparable<LogEntry>
     {
         string _message;
         LogGroup _sourceNode;
@@ -39,6 +39,15 @@ namespace PlantSCADA_Logviewer
             }
         }
 
+        public int CompareTo(LogEntry? other)
+        {
+            return this.Date.CompareTo(other.Date);
+        }
+    }
+
+
+    internal class LogEntryComparer : IComparer<LogEntry>
+    {
         public int Compare(LogEntry? x, LogEntry? y)
         {
             return x.Date.CompareTo(y.Date);

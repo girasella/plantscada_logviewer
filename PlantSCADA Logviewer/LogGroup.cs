@@ -88,6 +88,7 @@ namespace PlantSCADA_Logviewer
                 if (value)
                 {
                     MainViewModel.Instance.LogViewer.Merge(this.Load(MainViewModel.Instance.FilterTime.DateStart, MainViewModel.Instance.FilterTime.DateEnd));
+                    
                 }
                 else
                 {

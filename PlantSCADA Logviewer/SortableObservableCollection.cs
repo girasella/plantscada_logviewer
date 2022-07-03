@@ -4,8 +4,9 @@
     using System.Collections.Specialized;
     using System.ComponentModel;
     using System.Linq;
+    using System.Windows.Data;
 
-    public class SortableObservableCollection<T> : RangeObservableCollection<T>
+    public class SortableObservableCollection<T> : WpfObservableRangeCollection<T>
     {
         public SortableObservableCollection()
         {

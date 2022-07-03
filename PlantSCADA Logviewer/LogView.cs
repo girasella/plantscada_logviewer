@@ -8,7 +8,7 @@ using System.Windows.Data;
 
 namespace PlantSCADA_Logviewer
 {
-    internal class LogView : WpfObservableRangeCollection<LogEntry>, IEnumerable<LogEntry>
+    internal class LogView : SortableObservableCollection<LogEntry>, IEnumerable<LogEntry>
     {
         string _name;
 
@@ -22,7 +22,7 @@ namespace PlantSCADA_Logviewer
             Name = name;
         }
 
-        public LogView(string name, IEnumerable<LogEntry> collection) : base(collection)
+        public LogView(string name, IEnumerable<LogEntry> collection) : base(collection, new LogEntryComparer(),false)
         {
             Name = name;
         }
@@ -36,6 +36,7 @@ namespace PlantSCADA_Logviewer
         public void Merge(IEnumerable<LogEntry> other)
         {
             this.AddRange(other);
+            this.Sort();
         }
 
     }
