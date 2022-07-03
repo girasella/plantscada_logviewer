@@ -15,30 +15,37 @@ namespace PlantSCADA_Logviewer
         string _name;
         LogType _type;
         List<LogFile> _logFiles;
-        ICommand _addToNewView;
         bool _selected;
+        INodeLog _parent;
         public string Name { get => _name; set => _name = value; }
         public LogType Type { get => _type; set => _type = value; }
         internal List<LogFile> LogFiles { get => _logFiles; set => _logFiles = value; }
         public List<INodeLog> Children { get => null; set => throw new NotImplementedException(); }
-        public ICommand AddToView {
-            get => _addToNewView;
-            set => _addToNewView = value;
-        }
 
-        public LogGroup(string name, LogType type)
+        public LogGroup(string name, LogType type, INodeLog par)
         {
             Name = name;
             Type = type;
             LogFiles = new List<LogFile>();
-            AddToView = new DelegateCommand<ObservableCollection<LogView>>((lst) => AddToLogViewExec(lst));
+            Parent = par;
         }
         public LogGroup()
         {
             Name = "Sys";
             Type = LogType.Sys;
             LogFiles = new List<LogFile>();
-            AddToView = new DelegateCommand<ObservableCollection<LogView>>((lst) => AddToLogViewExec(lst));
+        }
+
+        public INodeLog Parent
+        {
+            get
+            {
+                return _parent;
+            }
+            set
+            {
+                _parent = value;
+            }
         }
 
         public List<LogEntry> Load(DateTime start, DateTime end)
@@ -54,7 +61,22 @@ namespace PlantSCADA_Logviewer
             }
             return logEntries;
         }
-
+        public string SourcePath
+        {
+            get
+            {
+                INodeLog elem = Parent;
+                string retValue = this.Name;
+                do
+                {
+                    
+                    retValue = Parent.Name + "." + retValue;
+                    elem = elem.Parent;
+                }
+                while (elem != null);
+                return retValue;
+            }
+        }
         public bool Selected
         {
             get

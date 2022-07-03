@@ -24,8 +24,9 @@ namespace PlantSCADA_Logviewer
             LogViews.Add(new LogView("LogView1"));
             TreeElems = new ObservableCollection<INodeLog>();
             LogCluster cl1 = new LogCluster("Cluster1");
-            LogGroup lg1 = new LogGroup("syslog", LogType.Sys);            
-            LogComponent lc1 = new LogComponent("alarmSrv",ComponentType.Alarm);
+            LogComponent lc1 = new LogComponent("alarmSrv", ComponentType.Alarm,cl1);
+            LogGroup lg1 = new LogGroup("syslog", LogType.Sys,lc1);            
+
             cl1.Children.Add(lc1);
             lc1.Children.Add(lg1);
             TreeElems.Add(cl1);
@@ -145,13 +146,13 @@ namespace PlantSCADA_Logviewer
 
             IEnumerable<FileInfo> files =  logsDirectory.EnumerateFiles();
 
-            LogComponent clientComponent = new LogComponent("Client", ComponentType.Client);
+            LogComponent clientComponent = new LogComponent("Client", ComponentType.Client,null);
 
             foreach (FileInfo file in files)
             {
                 if (file.Extension != ".dat" && file.Extension != ".log")
                     continue;
-                LogFile lFile = new LogFile(file);
+
                 string fName = file.Name.ToLower();
                               
                 string[] fileNameParts = fName.Split('.');
@@ -169,10 +170,11 @@ namespace PlantSCADA_Logviewer
 
                     if (cGroup == null)
                     {
-                        cGroup = new LogGroup(logGroupType, (LogType)lType);
+                        cGroup = new LogGroup(logGroupType, (LogType)lType,clientComponent);
                         clientComponent.Children.Add(cGroup);
                     }
-                    cGroup.LogFiles.Add(lFile);
+                    LogFile lgFile = new LogFile(file, cGroup.SourcePath);
+                    cGroup.LogFiles.Add(lgFile);
                     continue;
                 }                
                 if (fileNameParts.Length != 5)
@@ -195,7 +197,7 @@ namespace PlantSCADA_Logviewer
 
                 if (currentComponent == null)
                 {
-                    currentComponent = new LogComponent(logComponentName, (ComponentType)cType);
+                    currentComponent = new LogComponent(logComponentName, (ComponentType)cType,currentCluster);
                     currentCluster.Children.Add(currentComponent);
                 }
 
@@ -203,9 +205,10 @@ namespace PlantSCADA_Logviewer
 
                 if (currentGroup == null)
                 {
-                    currentGroup = new LogGroup(logGroupType, (LogType)lType);
+                    currentGroup = new LogGroup(logGroupType, (LogType)lType,currentComponent);
                     currentComponent.Children.Add(currentGroup);
                 }
+                LogFile lFile = new LogFile(file,currentGroup.SourcePath);
                 currentGroup.LogFiles.Add(lFile);
             }
 

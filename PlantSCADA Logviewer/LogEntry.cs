@@ -13,11 +13,12 @@ namespace PlantSCADA_Logviewer
         bool _visible;
 
         public DateTime _date;
-        public LogEntry(DateTime date, string message)
+        public LogEntry(DateTime date, string message, string source)
         {
             Date = date;
             Message = message;
             Visible = true;
+            Source = source;
         }
 
         public DateTime Date { get => _date; set => _date = value; }

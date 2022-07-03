@@ -47,7 +47,7 @@ namespace PlantSCADA_Logviewer
                 if (!DateTime.TryParseExact(dateString, "yyyy-MM-dd HH:mm:ss.fff\tzzz\t", CultureInfo.CurrentUICulture, DateTimeStyles.None, out dt))
                     continue;
 
-                retValue.Add(new LogEntry(dt, line.Substring(31, line.Length - 31)));
+                retValue.Add(new LogEntry(dt, line.Substring(31, line.Length - 31),this.Source));
             }
 
             return retValue; 

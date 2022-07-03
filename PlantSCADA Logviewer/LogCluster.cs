@@ -13,6 +13,9 @@ namespace PlantSCADA_Logviewer
 
 
         List<INodeLog> _logComponents;
+
+        INodeLog _parent;
+
         public string Name
         {
             get => _name;
@@ -32,6 +35,11 @@ namespace PlantSCADA_Logviewer
             set { }
 
         }
+
+        public INodeLog Parent { 
+            get => null; 
+            set => _parent = null; }
+
         public LogCluster(string name)
         {
             Name = name;
