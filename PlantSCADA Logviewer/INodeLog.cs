@@ -4,11 +4,13 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace PlantSCADA_Logviewer
 {
     public interface INodeLog : INotifyPropertyChanged
     {
+        
         public string Name { get; set; }
 
         public List<INodeLog> Children { get; set; }
@@ -26,5 +28,10 @@ namespace PlantSCADA_Logviewer
         {
             return Name;
         }
+        
+        public bool Selected { get; set; }
+
+
+
     }
 }

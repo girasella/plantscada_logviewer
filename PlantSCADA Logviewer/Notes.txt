@@ -4,3 +4,10 @@ Cluster
 Component (Alarm, Trend, IO, Client, etc)
 Group (sys, trace, debug, etc)
 File 
+
+Icons:
+
+Assembly (logGroup)
+Add 
+Add Agent
+DataServer - LocalServer - RemoteServer - Cluster

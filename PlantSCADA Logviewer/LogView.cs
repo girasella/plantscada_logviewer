@@ -1,15 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace PlantSCADA_Logviewer
 {
-    internal class LogView : List<LogEntry>
+    internal class LogView : WpfObservableRangeCollection<LogEntry>, IEnumerable<LogEntry>
     {
         string _name;
 
+
+        public LogView()
+        {
+            Name = "";
+        }
         public LogView(string name)
         {
             Name = name;
@@ -26,11 +33,9 @@ namespace PlantSCADA_Logviewer
             set { _name = value; }
         }
 
-        public void Merge(LogView other)
+        public void Merge(IEnumerable<LogEntry> other)
         {
             this.AddRange(other);
-            this.Sort();
-
         }
 
     }

@@ -19,6 +19,7 @@ namespace PlantSCADA_Logviewer
             FilterTime = new TimeFilter();
             InitCommands();
             LogsPath = "C:\\ProgramData\\Aveva\\Citect SCADA 2018 R2\\Logs";
+            LogViewer = new LogView(_logsPath);
             LogViews = new ObservableCollection<LogView>();
             LogViews.Add(new LogView("LogView1"));
             TreeElems = new ObservableCollection<INodeLog>();
@@ -35,8 +36,11 @@ namespace PlantSCADA_Logviewer
             InitCommands();
             LogsPath = "C:\\ProgramData\\Aveva\\Citect SCADA 2018 R2\\Logs";
             LogViews = new ObservableCollection<LogView>();
+            LogViewer = new LogView(_logsPath);
             TreeElems = new ObservableCollection<INodeLog>();
         }
+
+        static MainViewModel _instance;
 
         string _logsPath="";
 
@@ -48,7 +52,17 @@ namespace PlantSCADA_Logviewer
 
         ObservableCollection<LogView> _logViews;
 
+        LogView _logView;
 
+        internal static MainViewModel Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new MainViewModel(true);
+                return _instance;
+            }
+        }
         public ObservableCollection<LogView> LogViews
         {
             get
@@ -98,7 +112,19 @@ namespace PlantSCADA_Logviewer
             get => _setTree; 
             set => _setTree = value; }
         public ICommand BrowseFolders { get => _browseFolders; set => _browseFolders = value; }
-
+        public LogView LogViewer
+        { 
+            get
+            {
+                return _logView;
+            }
+            set
+            {
+                _logView = value;
+                OnPropertyChanged();
+            }
+        
+        }
 
         void BrowseDirs()
         {
@@ -198,13 +224,9 @@ namespace PlantSCADA_Logviewer
             BrowseFolders = new DelegateCommand(() => BrowseDirs());
         }
     
-    
-        private void AddToLogViews(LogGroup logGroup, DateTime start, DateTime end)
+        public void UpdateLogView()
         {
-            LogView lv = new LogView("Tab" + new Random(1).ToString(),logGroup.Load(start, end));
-
-            LogViews.Add(lv);
-
+            OnPropertyChanged(nameof(LogViewer));
         }
     
     }

@@ -108,13 +108,7 @@
                 <HierarchicalDataTemplate ItemsSource="{Binding Children}"
                                           DataType="{x:Type local:INodeLog}">
                     <StackPanel Orientation="Horizontal">
-                        <StackPanel.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="Add to Current View"  />
-                                <MenuItem Header="Add to new View" Command="{Binding AddToNewView}" />
-                            </ContextMenu>
-                        </StackPanel.ContextMenu>
-                        <TextBlock Text="o  "></TextBlock>
+                        <CheckBox IsChecked="{Binding Selected}" />
                         <TextBlock Text="{Binding Name}" />
                     </StackPanel>
 
@@ -122,7 +116,23 @@
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
-        <TabControl Name="tbc_openedFiles"
+        <DockPanel Grid.Row="2"
+                   Grid.Column="1"
+                   Grid.RowSpan="2"
+                   Grid.ColumnSpan="3">
+
+            <DataGrid ItemsSource="{Binding LogViewer}"
+                      AutoGenerateColumns="True"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch"
+                      DockPanel.Dock="Top"
+                      />
+
+
+        </DockPanel>
+        
+        
+        <!--<TabControl Name="tbc_openedFiles"
                     Grid.Row="2"
                     Grid.Column="1"
                     Grid.RowSpan="2"
@@ -137,6 +147,6 @@
                     </StackPanel>
                 </DataTemplate>
             </TabControl.ItemTemplate>
-        </TabControl>
+        </TabControl>-->
     </Grid>
 </Window>

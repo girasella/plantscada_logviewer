@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace PlantSCADA_Logviewer
 {
@@ -30,5 +31,14 @@ namespace PlantSCADA_Logviewer
         public string Name { get => _name; set => _name = value; }
         public List<INodeLog> Children { get => _logGroups; set => _logGroups = value; }
         public ComponentType Type { get => _type; set => _type = value; }
+
+        public bool Selected
+        {
+            get
+            {
+                return false;
+            }
+            set { }
+        }
     }
 }
