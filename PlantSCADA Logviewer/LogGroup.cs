@@ -65,12 +65,12 @@ namespace PlantSCADA_Logviewer
         {
             get
             {
-                INodeLog elem = Parent;
+                INodeLog elem = this.Parent;
                 string retValue = this.Name;
                 do
                 {
                     
-                    retValue = Parent.Name + "." + retValue;
+                    retValue = elem.Name + "." + retValue;
                     elem = elem.Parent;
                 }
                 while (elem != null);
@@ -98,14 +98,6 @@ namespace PlantSCADA_Logviewer
 
                 OnPropertyChanged();
             }
-        }
-
-        void AddToLogViewExec(ObservableCollection<LogView> lViews)
-        {
-            LogView logView = new LogView(this.Name, this.Load(new DateTime(0),DateTime.Now));
-
-            lViews.Add(logView);
-
         }
 
     }

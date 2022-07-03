@@ -18,7 +18,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
+            <ColumnDefinition Width="150" />
             <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition />
@@ -122,11 +122,28 @@
                    Grid.ColumnSpan="3">
 
             <DataGrid ItemsSource="{Binding LogViewer}"
-                      AutoGenerateColumns="True"
+                      AutoGenerateColumns="False"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch"
-                      DockPanel.Dock="Top"
-                      />
+                      DockPanel.Dock="Top">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Timestamp"
+                                        Binding="{Binding Date, StringFormat='yyyy-MM-dd HH:mm:ss.fff zzz'}"
+                                        IsReadOnly="True" />
+                    <DataGridTextColumn Header="Source"
+                                        Binding="{Binding Path=Source}"
+                                        IsReadOnly="True"/>
+                    <DataGridTemplateColumn Width="*" Header="Message" IsReadOnly="True">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Message}"
+                                           ToolTip="{Binding Message}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+                
+            </DataGrid>
 
 
         </DockPanel>

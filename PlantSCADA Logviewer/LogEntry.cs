@@ -31,7 +31,7 @@ namespace PlantSCADA_Logviewer
             set => _sourceNode = value;
         }
 
-        string Source
+        public string Source
         {
             get
             {
