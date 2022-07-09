@@ -56,7 +56,8 @@
                     Style="{StaticResource DateBox}">
             <TextBlock>Date Start</TextBlock>
             <DatePickerTextBox Name="dp_dateStart"
-                               Text="{Binding FilterTime.DateStart}" />
+                               Text="{Binding FilterTime.DateStart, StringFormat='yyyy-MM-dd HH:mm'}" 
+                               />
 
         </StackPanel>
         <StackPanel Grid.Row="1"
@@ -64,7 +65,7 @@
                     Style="{StaticResource DateBox}">
             <TextBlock>Date End</TextBlock>
             <DatePickerTextBox Name="dp_dateEnd"
-                               Text="{Binding FilterTime.DateEnd}" />
+                               Text="{Binding FilterTime.DateEnd,StringFormat='yyyy-MM-dd HH:mm'}" />
 
 
         </StackPanel>
@@ -109,7 +110,7 @@
                    Grid.RowSpan="2"
                    Grid.ColumnSpan="3">
 
-            <DataGrid ItemsSource="{Binding LogViewer}"
+            <DataGrid ItemsSource="{Binding ViewSource.View}"
                       AutoGenerateColumns="False"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch"
@@ -117,7 +118,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Timestamp"
                                         Binding="{Binding Date, StringFormat='yyyy-MM-dd HH:mm:ss.fff zzz'}"
-                                        IsReadOnly="True" SortMemberPath="Date"/>
+                                        IsReadOnly="True"/>
                     <DataGridTextColumn Header="Source"
                                         Binding="{Binding Path=Source}"
                                         IsReadOnly="True" />

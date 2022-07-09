@@ -51,14 +51,12 @@ namespace PlantSCADA_Logviewer
             {
                 this.AddRange(lGroup.LogEntries.Where(x => x.Date >= TimeInterval.DateStart && x.Date < TimeInterval.DateEnd));
             }
-            //this.Sort();
         }
 
         internal void AddGroup(LogGroup lGroup)
         {
             groups.Add(lGroup);
             this.AddRange(lGroup.LogEntries.Where(x=>x.Date >= TimeInterval.DateStart && x.Date < TimeInterval.DateEnd));           
-            //this.Sort();
         }
 
         internal void RemoveGroup(LogGroup lGroup)

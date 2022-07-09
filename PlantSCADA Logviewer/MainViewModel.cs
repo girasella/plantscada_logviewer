@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Forms;
+using System.Windows.Data;
 
 namespace PlantSCADA_Logviewer
 {
@@ -21,6 +22,7 @@ namespace PlantSCADA_Logviewer
             InitTimeFilterChoices();
             LogsPath = "C:\\ProgramData\\Aveva\\Citect SCADA 2018 R2\\Logs";
             LogViewer = new LogView(FilterTime);
+            ViewSource.Source = LogViewer;
             TreeElems = new ObservableCollection<INodeLog>();
             LogCluster cluster = new LogCluster("Cluster1");
             LogComponent component = new LogComponent("alarmSrv", ComponentType.Alarm,cluster);
@@ -37,6 +39,9 @@ namespace PlantSCADA_Logviewer
             InitTimeFilterChoices();
             LogsPath = "C:\\ProgramData\\Aveva\\Citect SCADA 2018 R2\\Logs";
             LogViewer = new LogView(FilterTime);
+            ViewSource = new CollectionViewSource();
+            ViewSource.Source = LogViewer;
+            ViewSource.SortDescriptions.Add(new SortDescription("Date", ListSortDirection.Ascending));
             TreeElems = new ObservableCollection<INodeLog>();
         }
 
@@ -45,6 +50,8 @@ namespace PlantSCADA_Logviewer
         string _logsPath="";
 
         ObservableCollection<INodeLog> _treeElems;
+
+        CollectionViewSource _viewSource;
 
         TimeFilter _filterTime;
 
@@ -135,6 +142,8 @@ namespace PlantSCADA_Logviewer
                 OnPropertyChanged(nameof(FilterTime));            
             } 
         }
+
+        public CollectionViewSource ViewSource { get => _viewSource; set => _viewSource = value; }
 
         void BrowseDirs()
         {
@@ -246,13 +255,13 @@ namespace PlantSCADA_Logviewer
             FilterSetup = new DelegateCommand<int>((par) => FilterTime.FilterFromNow(par));
             SetTree = new DelegateCommand(() => ScanLogDirectory(LogsPath));
             BrowseFolders = new DelegateCommand(() => BrowseDirs());
-            ApplyTimeFilter = new DelegateCommand(() => LogViewer.ApplyTimeFilter(FilterTime.DateStart, FilterTime.DateEnd));
+            ApplyTimeFilter = new DelegateCommand(() => ApplyTimeFilterExec());
         }
     
-        public void UpdateLogView()
+        private void ApplyTimeFilterExec()
         {
-            OnPropertyChanged(nameof(LogViewer));
+            LogViewer.ApplyTimeFilter(FilterTime.DateStart, FilterTime.DateEnd);
+            ViewSource.View.Refresh();
         }
-    
     }
 }

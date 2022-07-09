@@ -89,12 +89,14 @@ namespace PlantSCADA_Logviewer
                 if (value)
                 {
                     MainViewModel.Instance.LogViewer.AddGroup(this);
+                    
                 }
                 else
                 {
                     MainViewModel.Instance.LogViewer.RemoveGroup(this);
                 }
-                
+                MainViewModel.Instance.ViewSource.View.Refresh();
+
                 _selected = value;
 
                 OnPropertyChanged();
