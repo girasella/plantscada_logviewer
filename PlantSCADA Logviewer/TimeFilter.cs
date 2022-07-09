@@ -17,6 +17,12 @@ namespace PlantSCADA_Logviewer
             _dateEnd = DateTime.MaxValue;
         }
 
+        public TimeFilter(DateTime dateStart, DateTime dateEnd)
+        {
+            DateStart = dateStart;
+            DateEnd = dateEnd;
+        }
+
         public DateTime DateStart
         {
             get

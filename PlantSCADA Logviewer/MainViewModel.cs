@@ -18,26 +18,25 @@ namespace PlantSCADA_Logviewer
         {
             FilterTime = new TimeFilter();
             InitCommands();
+            InitTimeFilterChoices();
             LogsPath = "C:\\ProgramData\\Aveva\\Citect SCADA 2018 R2\\Logs";
-            LogViewer = new LogView(_logsPath);
-            LogViews = new ObservableCollection<LogView>();
-            LogViews.Add(new LogView("LogView1"));
+            LogViewer = new LogView(FilterTime);
             TreeElems = new ObservableCollection<INodeLog>();
-            LogCluster cl1 = new LogCluster("Cluster1");
-            LogComponent lc1 = new LogComponent("alarmSrv", ComponentType.Alarm,cl1);
-            LogGroup lg1 = new LogGroup("syslog", LogType.Sys,lc1);            
+            LogCluster cluster = new LogCluster("Cluster1");
+            LogComponent component = new LogComponent("alarmSrv", ComponentType.Alarm,cluster);
+            LogGroup group = new LogGroup("syslog", LogType.Sys,component);            
 
-            cl1.Children.Add(lc1);
-            lc1.Children.Add(lg1);
-            TreeElems.Add(cl1);
+            cluster.Children.Add(component);
+            component.Children.Add(group);
+            TreeElems.Add(cluster);
         }
         public MainViewModel(bool designer)
         {
             FilterTime = new TimeFilter();
             InitCommands();
+            InitTimeFilterChoices();
             LogsPath = "C:\\ProgramData\\Aveva\\Citect SCADA 2018 R2\\Logs";
-            LogViews = new ObservableCollection<LogView>();
-            LogViewer = new LogView(_logsPath);
+            LogViewer = new LogView(FilterTime);
             TreeElems = new ObservableCollection<INodeLog>();
         }
 
@@ -49,11 +48,14 @@ namespace PlantSCADA_Logviewer
 
         TimeFilter _filterTime;
 
-        ICommand _filterSetup, _setTree, _browseFolders;
-
-        ObservableCollection<LogView> _logViews;
+        ICommand _filterSetup, _setTree, _browseFolders,_applyTimeFilter;
 
         LogView _logView;
+
+        int _hoursBefore;
+
+        List<Tuple<string,int>> _timeFilterChoices = new List<Tuple<string,int>>();
+
 
         internal static MainViewModel Instance
         {
@@ -64,17 +66,7 @@ namespace PlantSCADA_Logviewer
                 return _instance;
             }
         }
-        public ObservableCollection<LogView> LogViews
-        {
-            get
-            {
-                return _logViews;
-            }
-            set
-            {
-                _logViews = value;
-            }
-        }
+
         public string LogsPath
         {
             get
@@ -125,6 +117,23 @@ namespace PlantSCADA_Logviewer
                 OnPropertyChanged();
             }
         
+        }
+
+        public ICommand ApplyTimeFilter { get => _applyTimeFilter; set => _applyTimeFilter = value; }
+        public List<Tuple<string, int>> TimeFilterChoices { get => _timeFilterChoices; set => _timeFilterChoices = value; }
+        public int HoursBefore {
+            get { 
+                return _hoursBefore;
+            }
+            set {
+                if (value == _hoursBefore) return;
+
+                _hoursBefore = value;
+                FilterTime.DateStart = DateTime.Now - new TimeSpan(_hoursBefore,0,0);
+                FilterTime.DateEnd = DateTime.Now;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(FilterTime));            
+            } 
         }
 
         void BrowseDirs()
@@ -211,7 +220,7 @@ namespace PlantSCADA_Logviewer
                 LogFile lFile = new LogFile(file,currentGroup);
                 currentGroup.LogFiles.Add(lFile);
             }
-
+            TreeElems.Clear();
 
             TreeElems.Add(clientComponent);
             foreach (var elem in clusterMap)
@@ -219,12 +228,25 @@ namespace PlantSCADA_Logviewer
             
         }
 
+        private void InitTimeFilterChoices()
+        {
+            TimeFilterChoices = new List<Tuple<string, int>>()
+            {
+                new Tuple<string,int>("Last Hour",1),
+                new Tuple<string,int>("Last 6 Hours",6),
+                new Tuple<string, int>("Last 24 Hours", 24),
+                new Tuple<string, int>("Last 48 Hours", 48),
+                new Tuple<string, int>("Last 7 Days", 168),
+                new Tuple<string, int>("Last 30 days", 24 * 30)
+            };
+        }
 
         private void InitCommands()
         {
             FilterSetup = new DelegateCommand<int>((par) => FilterTime.FilterFromNow(par));
             SetTree = new DelegateCommand(() => ScanLogDirectory(LogsPath));
             BrowseFolders = new DelegateCommand(() => BrowseDirs());
+            ApplyTimeFilter = new DelegateCommand(() => LogViewer.ApplyTimeFilter(FilterTime.DateStart, FilterTime.DateEnd));
         }
     
         public void UpdateLogView()

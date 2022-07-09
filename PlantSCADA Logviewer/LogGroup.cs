@@ -15,6 +15,7 @@ namespace PlantSCADA_Logviewer
         string _name;
         LogType _type;
         List<LogFile> _logFiles;
+        List<LogEntry> _logEntries;
         bool _selected;
         INodeLog _parent;
         public string Name { get => _name; set => _name = value; }
@@ -54,7 +55,7 @@ namespace PlantSCADA_Logviewer
 
             foreach (var file in LogFiles)
             {
-                var entries = file.Load(start, end);
+                var entries = file.LogEntries;
 
                 logEntries.AddRange(entries);
 
@@ -87,12 +88,11 @@ namespace PlantSCADA_Logviewer
             {
                 if (value)
                 {
-                    MainViewModel.Instance.LogViewer.Merge(this.Load(MainViewModel.Instance.FilterTime.DateStart, MainViewModel.Instance.FilterTime.DateEnd));
-                    
+                    MainViewModel.Instance.LogViewer.AddGroup(this);
                 }
                 else
                 {
-                    MainViewModel.Instance.LogViewer.RemoveAll(x => x.SourceNode == this);
+                    MainViewModel.Instance.LogViewer.RemoveGroup(this);
                 }
                 
                 _selected = value;
@@ -101,5 +101,19 @@ namespace PlantSCADA_Logviewer
             }
         }
 
+        internal List<LogEntry> LogEntries {
+            get
+            {
+                if (_logEntries == null)
+                {
+                    _logEntries = new List<LogEntry>();
+                    foreach (var file in LogFiles)
+                    {
+                        _logEntries.AddRange(file.LogEntries);
+                    }                    
+                }
+                return _logEntries;
+            }
+        }
     }
 }

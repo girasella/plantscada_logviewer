@@ -12,15 +12,22 @@ namespace PlantSCADA_Logviewer
     {
         string _name;
 
+        List<LogGroup> groups;
 
-        public LogView()
+        TimeFilter _timeInterval;
+
+        public LogView(TimeFilter tf)
         {
             Name = "";
+            groups = new List<LogGroup>();
+            TimeInterval = new TimeFilter(tf.DateStart, tf.DateEnd);
         }
-        public LogView(string name)
-        {
-            Name = name;
-        }
+
+        //public LogView(string name)
+        //{
+        //    Name = name;
+        //    groups = new List<LogGroup>();
+        //}
 
         public LogView(string name, IEnumerable<LogEntry> collection) : base(collection, new LogEntryComparer(),false)
         {
@@ -33,10 +40,31 @@ namespace PlantSCADA_Logviewer
             set { _name = value; }
         }
 
-        public void Merge(IEnumerable<LogEntry> other)
+        internal TimeFilter TimeInterval { get => _timeInterval; set => _timeInterval = value; }
+
+        public void ApplyTimeFilter(DateTime start, DateTime end)
         {
-            this.AddRange(other);
-            this.Sort();
+            TimeInterval.DateStart = start;
+            TimeInterval.DateEnd = end;
+            this.Clear();
+            foreach (LogGroup lGroup in groups)
+            {
+                this.AddRange(lGroup.LogEntries.Where(x => x.Date >= TimeInterval.DateStart && x.Date < TimeInterval.DateEnd));
+            }
+            //this.Sort();
+        }
+
+        internal void AddGroup(LogGroup lGroup)
+        {
+            groups.Add(lGroup);
+            this.AddRange(lGroup.LogEntries.Where(x=>x.Date >= TimeInterval.DateStart && x.Date < TimeInterval.DateEnd));           
+            //this.Sort();
+        }
+
+        internal void RemoveGroup(LogGroup lGroup)
+        {
+            groups.Remove(lGroup);
+            this.RemoveAll(x => x.SourceNode == lGroup);
         }
 
     }

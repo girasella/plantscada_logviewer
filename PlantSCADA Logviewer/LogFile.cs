@@ -24,11 +24,11 @@ namespace PlantSCADA_Logviewer
 
         public IEnumerable<LogEntry> Load(DateTime start, DateTime end)
         {
-            if (_logEntries == null)
+            if (LogEntries == null)
             {
-                _logEntries = ReadFile();
+                LogEntries = ReadFile();
             }
-            var retValue = _logEntries.Where(x => x.Date > start && x.Date < end);
+            var retValue = LogEntries.Where(x => x.Date > start && x.Date < end);
 
             return retValue == null ? new List<LogEntry>() : retValue;
         }
@@ -63,5 +63,17 @@ namespace PlantSCADA_Logviewer
         public DateTime Start { get => _start; set => _start = value; }
         public DateTime End { get => _end; set => _end = value; }
         public LogGroup Source { get => _source; set => _source = value; }
+        internal List<LogEntry> LogEntries {
+            get
+            {
+                if (_logEntries == null)
+                {
+                    _logEntries = ReadFile();
+                }
+                return _logEntries;
+            }
+            set => _logEntries = value; 
+       
+        }
     }
 }

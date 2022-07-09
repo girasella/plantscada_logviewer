@@ -31,17 +31,23 @@
                 <Setter Property="VerticalAlignment"
                         Value="Center" />
             </Style>
+            <Style TargetType="Button">
+                <Setter Property="Height"
+                        Value="30" />
+                <Setter Property="Width"
+                        Value="150" />
+            </Style>
         </Grid.Resources>
         <TextBox Name="tb_logsPath"
                  Text="{Binding LogsPath}"
                  Grid.Row="0"
-                 Grid.ColumnSpan="3"
+                 Grid.ColumnSpan="2"
                  Grid.Column="0"
                  TextAlignment="Center"
                  VerticalContentAlignment="Center"
                  Margin="15" />
         <Button Grid.Row="0"
-                Grid.Column="3"
+                Grid.Column="2"
                 Name="btn_Browse"
                 Command="{Binding BrowseFolders}"
                 Margin="15">Browse</Button>
@@ -51,7 +57,7 @@
             <TextBlock>Date Start</TextBlock>
             <DatePickerTextBox Name="dp_dateStart"
                                Text="{Binding FilterTime.DateStart}" />
-            
+
         </StackPanel>
         <StackPanel Grid.Row="1"
                     Grid.Column="1"
@@ -62,47 +68,29 @@
 
 
         </StackPanel>
-        <StackPanel Grid.Row="1"
-                    Grid.Column="2"
-                    Margin="3,0,3,0">
-            <Button Command="{Binding FilterSetup}">
-                <Button.CommandParameter>
-                    <sys:Int32>1</sys:Int32>
-                </Button.CommandParameter>
-                Last hour</Button>
-            <Button Command="{Binding FilterSetup}">
-                <Button.CommandParameter>
-                    <sys:Int32>6</sys:Int32>
-                </Button.CommandParameter>
-                
-                Last 6 hours</Button>
-            <Button Command="{Binding FilterSetup}"
-                    >
-                <Button.CommandParameter>
-                    <sys:Int32>24</sys:Int32>
-                </Button.CommandParameter> Last 24 hours</Button>
-            <Button Command="{Binding FilterSetup}">
-                <Button.CommandParameter>
-                    <sys:Int32>168</sys:Int32>
-                </Button.CommandParameter>
-                Last 7 days</Button>
-            <Button Command="{Binding FilterSetup}">
-                <Button.CommandParameter>
-                    <sys:Int32>720</sys:Int32>
-                </Button.CommandParameter>
-                Last 30 days</Button>
-        </StackPanel>
+        <ComboBox Grid.Column="2"
+                  Grid.Row="1"
+                  Margin="1,28"
+                  ItemsSource="{Binding TimeFilterChoices}"
+                  DisplayMemberPath="Item1"
+                  SelectedValuePath="Item2"
+                  SelectedValue="{Binding HoursBefore}"
+                  SelectedIndex="0"
+                  HorizontalContentAlignment="Left"
+                  VerticalContentAlignment="Center"
+                  >            
+        </ComboBox>
         <Button Grid.Row="1"
                 Grid.Column="3"
                 Margin="15"
                 Name="btn_Set"
-                Command="{Binding SetTree}">
-            Set
+                Command="{Binding ApplyTimeFilter}">
+            Apply
         </Button>
         <TreeView Name="tv_components"
                   Grid.Row="2"
                   Grid.Column="0"
-                  Grid.RowSpan="2"  
+                  Grid.RowSpan="2"
                   ItemsSource="{Binding TreeElems}">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Children}"
@@ -112,7 +100,7 @@
                         <TextBlock Text="{Binding Name}" />
                     </StackPanel>
 
-                 
+
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
@@ -129,11 +117,13 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Timestamp"
                                         Binding="{Binding Date, StringFormat='yyyy-MM-dd HH:mm:ss.fff zzz'}"
-                                        IsReadOnly="True" />
+                                        IsReadOnly="True" SortMemberPath="Date"/>
                     <DataGridTextColumn Header="Source"
                                         Binding="{Binding Path=Source}"
-                                        IsReadOnly="True"/>
-                    <DataGridTemplateColumn Width="*" Header="Message" IsReadOnly="True">
+                                        IsReadOnly="True" />
+                    <DataGridTemplateColumn Width="*"
+                                            Header="Message"
+                                            IsReadOnly="True">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Message}"
@@ -142,13 +132,16 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
-                
+
             </DataGrid>
 
 
         </DockPanel>
-        
-        
+        <Button Grid.Column="3"
+                x:Name="btn_Set_Copy"
+                Command="{Binding SetTree}"
+                Content="Apply" />
+
         <!--<TabControl Name="tbc_openedFiles"
                     Grid.Row="2"
                     Grid.Column="1"
