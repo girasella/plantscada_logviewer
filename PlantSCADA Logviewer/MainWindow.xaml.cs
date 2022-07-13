@@ -25,5 +25,33 @@ namespace PlantSCADA_Logviewer
             InitializeComponent();
             DataContext = MainViewModel.Instance;
         }
+
+        private void CheckTimeInput(object sender, TextCompositionEventArgs e)
+        {
+            TextBox tbox = sender as TextBox;
+
+            string content = tbox.Text + e.Text;
+
+            int limit = tbox.Tag.ToString() == "H" ? 23 : 59;
+            
+            if (content.Length > 2)
+            {
+                e.Handled = true;
+                return;
+            }
+
+            if (int.TryParse(content, out int parsedContent))
+            {
+                if (parsedContent > limit)
+                    e.Handled = true;
+            }
+            else
+            {
+                e.Handled = true;
+            }
+            
+
+
+        }
     }
 }

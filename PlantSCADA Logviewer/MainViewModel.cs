@@ -136,8 +136,8 @@ namespace PlantSCADA_Logviewer
                 if (value == _hoursBefore) return;
 
                 _hoursBefore = value;
-                FilterTime.DateStart = DateTime.Now - new TimeSpan(_hoursBefore,0,0);
-                FilterTime.DateEnd = DateTime.Now;
+                FilterTime.DateStart.Timestamp = DateTime.Now - new TimeSpan(_hoursBefore,0,0);
+                FilterTime.DateEnd.Timestamp = DateTime.Now;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(FilterTime));            
             } 

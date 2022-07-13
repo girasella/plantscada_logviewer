@@ -55,17 +55,48 @@
                     Grid.Column="0"
                     Style="{StaticResource DateBox}">
             <TextBlock>Date Start</TextBlock>
-            <DatePickerTextBox Name="dp_dateStart"
-                               Text="{Binding FilterTime.DateStart, StringFormat='yyyy-MM-dd HH:mm'}" 
-                               />
+            <DatePicker Name="dp_dateStart"
+                        Text="{Binding FilterTime.DateStart.Day, StringFormat='yyyy-MM-dd'}"
+                        VerticalContentAlignment="Center"
+                        HorizontalContentAlignment="Center"
+                        VerticalAlignment="Center" />
+            <StackPanel Orientation="Horizontal">
+                <TextBox Text="{Binding FilterTime.DateStart.Hours, StringFormat='00'}"
+                         Width="20"
+                         Margin="2,2"
+                         PreviewTextInput="CheckTimeInput"
+                         Tag="H" />
+                <TextBlock Text=":" />
+                <TextBox Text="{Binding FilterTime.DateStart.Minutes, StringFormat='00'}"
+                         Width="20"
+                         Margin="2,2"
+                         PreviewTextInput="CheckTimeInput"
+                         Tag="M" />
+            </StackPanel>
 
         </StackPanel>
         <StackPanel Grid.Row="1"
                     Grid.Column="1"
                     Style="{StaticResource DateBox}">
             <TextBlock>Date End</TextBlock>
-            <DatePickerTextBox Name="dp_dateEnd"
-                               Text="{Binding FilterTime.DateEnd,StringFormat='yyyy-MM-dd HH:mm'}" />
+            <DatePicker Name="dp_dateEnd"
+                        Text="{Binding FilterTime.DateEnd.Day, StringFormat='yyyy-MM-dd'}"
+                        VerticalContentAlignment="Center"
+                        HorizontalContentAlignment="Center"
+                        VerticalAlignment="Center" />
+            <StackPanel Orientation="Horizontal">
+                <TextBox Text="{Binding FilterTime.DateEnd.Hours, StringFormat='00'}"
+                         Width="20"
+                         Margin="2,2"
+                         PreviewTextInput="CheckTimeInput"
+                         Tag="H" />
+                <TextBlock Text=":" />
+                <TextBox Text="{Binding FilterTime.DateEnd.Minutes, StringFormat='00'}"
+                         Width="20"
+                         Margin="2,2"
+                         PreviewTextInput="CheckTimeInput"
+                         Tag="M" />
+            </StackPanel>
 
 
         </StackPanel>
@@ -78,8 +109,7 @@
                   SelectedValue="{Binding HoursBefore}"
                   SelectedIndex="0"
                   HorizontalContentAlignment="Left"
-                  VerticalContentAlignment="Center"
-                  >            
+                  VerticalContentAlignment="Center">
         </ComboBox>
         <Button Grid.Row="1"
                 Grid.Column="3"
@@ -118,7 +148,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Timestamp"
                                         Binding="{Binding Date, StringFormat='yyyy-MM-dd HH:mm:ss.fff zzz'}"
-                                        IsReadOnly="True"/>
+                                        IsReadOnly="True" />
                     <DataGridTextColumn Header="Source"
                                         Binding="{Binding Path=Source}"
                                         IsReadOnly="True" />

@@ -8,22 +8,34 @@ namespace PlantSCADA_Logviewer
 {
     internal class TimeFilter : ViewModelBase
     {
-        DateTime _dateStart;
-        DateTime _dateEnd;
+        DateTimeWrapper _dateStart;
+        DateTimeWrapper _dateEnd;
 
         public TimeFilter()
         {
-            _dateStart = DateTime.MinValue;
-            _dateEnd = DateTime.MaxValue;
+            _dateEnd = new DateTimeWrapper();
+            _dateStart = new DateTimeWrapper();
+
+            _dateStart.Timestamp = DateTime.MinValue;
+            _dateEnd.Timestamp = DateTime.MaxValue;
         }
 
         public TimeFilter(DateTime dateStart, DateTime dateEnd)
         {
+            _dateEnd = new DateTimeWrapper();
+            _dateStart = new DateTimeWrapper();
+            DateStart.Timestamp = dateStart;
+            DateEnd.Timestamp = dateEnd;
+        }
+        public TimeFilter(DateTimeWrapper dateStart, DateTimeWrapper dateEnd)
+        {
+            _dateEnd = new DateTimeWrapper();
+            _dateStart = new DateTimeWrapper();
             DateStart = dateStart;
             DateEnd = dateEnd;
         }
 
-        public DateTime DateStart
+        public DateTimeWrapper DateStart
         {
             get
             {
@@ -36,7 +48,7 @@ namespace PlantSCADA_Logviewer
             }
         }
 
-        public DateTime DateEnd
+        public DateTimeWrapper DateEnd
         {
             get { return _dateEnd; }
 
@@ -49,13 +61,13 @@ namespace PlantSCADA_Logviewer
 
         public void FilterSetup(DateTime start, DateTime end)
         {
-            DateStart = start;
-            DateEnd = end;
+            DateStart.Timestamp = start;
+            DateEnd.Timestamp = end;
         }
         public void FilterFromNow(int nHours)
         {
-            DateStart = DateTime.Now.Subtract(new TimeSpan(nHours,0,0));
-            DateEnd = DateTime.Now;
+            DateStart.Timestamp = DateTime.Now.Subtract(new TimeSpan(nHours,0,0));
+            DateEnd.Timestamp = DateTime.Now;
         }
 
     }
