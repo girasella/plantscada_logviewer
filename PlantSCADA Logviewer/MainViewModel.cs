@@ -260,7 +260,7 @@ namespace PlantSCADA_Logviewer
     
         private void ApplyTimeFilterExec()
         {
-            LogViewer.ApplyTimeFilter(FilterTime.DateStart, FilterTime.DateEnd);
+            LogViewer.ApplyTimeFilter(FilterTime.DateStart.Timestamp, FilterTime.DateEnd.Timestamp);
             ViewSource.View.Refresh();
         }
     }

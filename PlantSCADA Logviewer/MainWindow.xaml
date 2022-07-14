@@ -56,7 +56,8 @@
                     Style="{StaticResource DateBox}">
             <TextBlock>Date Start</TextBlock>
             <DatePicker Name="dp_dateStart"
-                        Text="{Binding FilterTime.DateStart.Day, StringFormat='yyyy-MM-dd'}"
+                        
+                        SelectedDate="{Binding FilterTime.DateStart.SelectedDay}"
                         VerticalContentAlignment="Center"
                         HorizontalContentAlignment="Center"
                         VerticalAlignment="Center" />
@@ -79,11 +80,12 @@
                     Grid.Column="1"
                     Style="{StaticResource DateBox}">
             <TextBlock>Date End</TextBlock>
-            <DatePicker Name="dp_dateEnd"
-                        Text="{Binding FilterTime.DateEnd.Day, StringFormat='yyyy-MM-dd'}"
+            <DatePicker Name="dp_dateEnd"                        
+                        SelectedDate="{Binding FilterTime.DateEnd.SelectedDay}"
                         VerticalContentAlignment="Center"
                         HorizontalContentAlignment="Center"
                         VerticalAlignment="Center" />
+
             <StackPanel Orientation="Horizontal">
                 <TextBox Text="{Binding FilterTime.DateEnd.Hours, StringFormat='00'}"
                          Width="20"

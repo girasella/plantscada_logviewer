@@ -42,10 +42,10 @@ namespace PlantSCADA_Logviewer
 
         internal TimeFilter TimeInterval { get => _timeInterval; set => _timeInterval = value; }
 
-        public void ApplyTimeFilter(DateTimeWrapper start, DateTimeWrapper end)
+        public void ApplyTimeFilter(DateTime start, DateTime end)
         {
-            TimeInterval.DateStart = start;
-            TimeInterval.DateEnd = end;
+            TimeInterval.DateStart = new DateTimeWrapper(start);
+            TimeInterval.DateEnd = new DateTimeWrapper(end);
             this.Clear();
             foreach (LogGroup lGroup in groups)
             {

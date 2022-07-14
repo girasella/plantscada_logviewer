@@ -12,7 +12,13 @@ namespace PlantSCADA_Logviewer
 
         int _hours, _minutes;
 
-        public DateTime Day
+
+        internal DateTimeWrapper(DateTime dt)
+        {
+            Timestamp = dt;
+        }
+
+        public DateTime SelectedDay
         {
             get
             {
@@ -22,7 +28,7 @@ namespace PlantSCADA_Logviewer
             set
             {
                 _day = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(SelectedDay));
             }
         }
 
@@ -56,11 +62,11 @@ namespace PlantSCADA_Logviewer
         {
             get
             {
-                return Day.AddHours(Hours).AddMinutes(Minutes);
+                return SelectedDay.AddHours(Hours).AddMinutes(Minutes);
             }
             set
             {
-                Day = new DateTime(value.Year, value.Month, value.Day);
+                SelectedDay = new DateTime(value.Year, value.Month, value.Day);
                 Hours = value.Hour;
                 Minutes = value.Minute;
                 OnPropertyChanged();

@@ -13,26 +13,14 @@ namespace PlantSCADA_Logviewer
 
         public TimeFilter()
         {
-            _dateEnd = new DateTimeWrapper();
-            _dateStart = new DateTimeWrapper();
-
-            _dateStart.Timestamp = DateTime.MinValue;
-            _dateEnd.Timestamp = DateTime.MaxValue;
+            _dateEnd = new DateTimeWrapper(DateTime.Now);
+            _dateStart = new DateTimeWrapper(DateTime.Now.AddDays(-7));
         }
 
-        public TimeFilter(DateTime dateStart, DateTime dateEnd)
+        public TimeFilter(DateTimeWrapper dtStart, DateTimeWrapper dtEnd)
         {
-            _dateEnd = new DateTimeWrapper();
-            _dateStart = new DateTimeWrapper();
-            DateStart.Timestamp = dateStart;
-            DateEnd.Timestamp = dateEnd;
-        }
-        public TimeFilter(DateTimeWrapper dateStart, DateTimeWrapper dateEnd)
-        {
-            _dateEnd = new DateTimeWrapper();
-            _dateStart = new DateTimeWrapper();
-            DateStart = dateStart;
-            DateEnd = dateEnd;
+            _dateEnd = new DateTimeWrapper(dtStart.Timestamp);
+            _dateStart = new DateTimeWrapper(dtEnd.Timestamp);
         }
 
         public DateTimeWrapper DateStart
