@@ -12,7 +12,7 @@
         Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="80" />
+            <RowDefinition Height="40" />
             <RowDefinition Height="80" />
             <RowDefinition />
             <RowDefinition />
@@ -37,6 +37,23 @@
                 <Setter Property="Width"
                         Value="150" />
             </Style>
+            <Style TargetType="DatePicker">
+                <Setter Property="Width"
+                        Value="100" />
+                <Setter Property="Height"
+                        Value="30" />
+                <Setter Property="IsTodayHighlighted"
+                        Value="True" />
+                <Setter Property="HorizontalContentAlignment"
+                        Value="Left" />
+                <Setter Property="SelectedDateFormat"
+                        Value="Short" />
+            </Style>
+            <Style TargetType="DatePickerTextBox">
+                <Setter Property="VerticalAlignment"
+                        Value="Center" />
+                
+            </Style>
         </Grid.Resources>
         <TextBox Name="tb_logsPath"
                  Text="{Binding LogsPath}"
@@ -45,22 +62,20 @@
                  Grid.Column="0"
                  TextAlignment="Center"
                  VerticalContentAlignment="Center"
-                 Margin="15" />
+                 HorizontalContentAlignment="Left"
+                 Height="30"
+                  />
         <Button Grid.Row="0"
                 Grid.Column="2"
                 Name="btn_Browse"
-                Command="{Binding BrowseFolders}"
-                Margin="15">Browse</Button>
+                Command="{Binding BrowseFolders}">Browse</Button>
         <StackPanel Grid.Row="1"
                     Grid.Column="0"
                     Style="{StaticResource DateBox}">
             <TextBlock>Date Start</TextBlock>
             <DatePicker Name="dp_dateStart"
-                        
-                        SelectedDate="{Binding FilterTime.DateStart.SelectedDay}"
-                        VerticalContentAlignment="Center"
-                        HorizontalContentAlignment="Center"
-                        VerticalAlignment="Center" />
+                        SelectedDate="{Binding FilterTime.DateStart.SelectedDay}">
+            </DatePicker>
             <StackPanel Orientation="Horizontal">
                 <TextBox Text="{Binding FilterTime.DateStart.Hours, StringFormat='00'}"
                          Width="20"
@@ -78,13 +93,17 @@
         </StackPanel>
         <StackPanel Grid.Row="1"
                     Grid.Column="1"
-                    Style="{StaticResource DateBox}">
+                    Style="{StaticResource DateBox}"
+                    >
             <TextBlock>Date End</TextBlock>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+
+                </Grid.ColumnDefinitions>
+            </Grid>
             <DatePicker Name="dp_dateEnd"                        
-                        SelectedDate="{Binding FilterTime.DateEnd.SelectedDay}"
-                        VerticalContentAlignment="Center"
-                        HorizontalContentAlignment="Center"
-                        VerticalAlignment="Center" />
+                        SelectedDate="{Binding FilterTime.DateEnd.SelectedDay}" />
 
             <StackPanel Orientation="Horizontal">
                 <TextBox Text="{Binding FilterTime.DateEnd.Hours, StringFormat='00'}"
@@ -104,7 +123,8 @@
         </StackPanel>
         <ComboBox Grid.Column="2"
                   Grid.Row="1"
-                  Margin="1,28"
+                  Height="30"
+                  Width="150"
                   ItemsSource="{Binding TimeFilterChoices}"
                   DisplayMemberPath="Item1"
                   SelectedValuePath="Item2"
