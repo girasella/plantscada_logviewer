@@ -172,7 +172,7 @@
             </StackPanel>
             <ComboBox Grid.Column="2"
                       Grid.Row="1"
-                      Width="190"
+                      Width="185"
                       Height="30"
                       Margin="-5,0,0,0"
                       ItemsSource="{Binding TimeFilterChoices}"
@@ -261,16 +261,19 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Timestamp"
                                             Binding="{Binding Date, StringFormat='yyyy-MM-dd HH:mm:ss.fff zzz'}"
-                                            IsReadOnly="True" />
+                                            IsReadOnly="True"
+                                            FontFamily="Consolas" />
                         <DataGridTextColumn Header="Source"
                                             Binding="{Binding Path=Source}"
-                                            IsReadOnly="True" />
+                                            IsReadOnly="True"
+                                            FontFamily="Consolas"/>
                         <DataGridTemplateColumn Width="*"
                                                 Header="Message"
                                                 IsReadOnly="True">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Message}"
+                                               FontFamily="Consolas"
                                                ToolTip="{Binding Message}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
