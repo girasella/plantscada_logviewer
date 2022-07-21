@@ -51,7 +51,8 @@ namespace PlantSCADA_Logviewer
                     continue;
 
                 string msg = line.Substring(31, line.Length - 31);
-                msg = msg.Replace('\t', ' ');
+                msg = Regex.Replace(msg, " {2,}", " ");
+                msg = msg.Replace("\t"," ");
                 retValue.Add(new LogEntry(dt, msg,this.Source));
             }
 
