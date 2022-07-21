@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace PlantSCADA_Logviewer
 {
@@ -40,6 +41,8 @@ namespace PlantSCADA_Logviewer
 
             foreach(string line in lines)
             {
+                if (line.Length < 30) 
+                    continue;
                 string dateString = line.Substring(0, 30);
 
                 DateTime dt;

@@ -178,13 +178,14 @@ namespace PlantSCADA_Logviewer
                 string logGroupType = fileNameParts[0];
                 
                 LogType? lType = LogTypeDictionary.GetLogType(logGroupType);
+                if (lType == null)
+                    continue;
 
                 if (fileNameParts.Length == 2)
                 {
                     LogGroup cGroup = (LogGroup)clientComponent.Children.FirstOrDefault(x => ((LogGroup)x).Type == lType);
 
-                    if (lType == null)                    
-                        continue;                    
+                                  
 
                     if (cGroup == null)
                     {
