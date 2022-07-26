@@ -20,19 +20,21 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="0" Grid.ColumnSpan="2">
-            <Grid.RowDefinitions >
-                <RowDefinition Height="40" />                
+        <Grid Grid.Row="0"
+              Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
                 <RowDefinition Height="50" />
                 <RowDefinition Height="25" />
-                <RowDefinition Height="40"/>
+                <RowDefinition Height="40" />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"
                                   MinWidth="100" />
                 <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="*" MinWidth="90"/>
+                <ColumnDefinition Width="*"
+                                  MinWidth="90" />
                 <ColumnDefinition Width="100" />
                 <ColumnDefinition Width="100" />
             </Grid.ColumnDefinitions>
@@ -122,19 +124,21 @@
                         Margin="5,0,0,0">
                 <TextBlock>Date Start</TextBlock>
 
-                <StackPanel Orientation="Horizontal" 
-                            HorizontalAlignment="Left" >
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Left">
                     <DatePicker Name="dp_dateStart"
                                 Height="30"
                                 SelectedDate="{Binding FilterTime.DateStart.SelectedDay}" />
-                    <Border BorderThickness="1" BorderBrush="Gray"  VerticalAlignment="Center">
-                        <StackPanel Orientation="Horizontal" Height="28">
+                    <Border BorderThickness="1"
+                            BorderBrush="Gray"
+                            VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal"
+                                    Height="28">
                             <TextBox Text="{Binding FilterTime.DateStart.Hours, StringFormat='00'}"
                                      Style="{StaticResource timeTextBox}"
                                      PreviewTextInput="CheckTimeInput"
-                                     
                                      Tag="H" />
-                            <TextBlock Style="{StaticResource timeSeparator}"/>
+                            <TextBlock Style="{StaticResource timeSeparator}" />
                             <TextBox Text="{Binding FilterTime.DateStart.Minutes, StringFormat='00'}"
                                      Style="{StaticResource timeTextBox}"
                                      PreviewTextInput="CheckTimeInput"
@@ -154,13 +158,15 @@
                     <DatePicker Name="dp_dateEnd"
                                 Height="30"
                                 SelectedDate="{Binding FilterTime.DateEnd.SelectedDay}" />
-                    <Border BorderBrush="Gray" BorderThickness="1">
-                        <StackPanel Orientation="Horizontal" Height="28">
+                    <Border BorderBrush="Gray"
+                            BorderThickness="1">
+                        <StackPanel Orientation="Horizontal"
+                                    Height="28">
                             <TextBox Text="{Binding FilterTime.DateEnd.Hours, StringFormat='00'}"
                                      Style="{StaticResource timeTextBox}"
                                      PreviewTextInput="CheckTimeInput"
                                      Tag="H" />
-                            <TextBlock Style="{StaticResource timeSeparator}"/>
+                            <TextBlock Style="{StaticResource timeSeparator}" />
                             <TextBox Text="{Binding FilterTime.DateEnd.Minutes, StringFormat='00'}"
                                      Style="{StaticResource timeTextBox}"
                                      PreviewTextInput="CheckTimeInput"
@@ -201,9 +207,15 @@
                 <TextBlock Margin="0,4,0,0"
                            VerticalAlignment="Center"
                            Text="Filter Mode:     " />
-                <RadioButton VerticalAlignment="Center">Regex</RadioButton>
-                <RadioButton VerticalAlignment="Center">Include</RadioButton>
-                <RadioButton VerticalAlignment="Center">Exclude</RadioButton>
+                <RadioButton GroupName="Mode"
+                             IsChecked="{Binding Path=ModeArray[0], Mode=TwoWay}"
+                             VerticalAlignment="Center">Include</RadioButton>
+                <RadioButton GroupName="Mode"
+                             IsChecked="{Binding Path=ModeArray[1], Mode=TwoWay}"
+                             VerticalAlignment="Center">Exclude</RadioButton>
+                <RadioButton GroupName="Mode"
+                             IsChecked="{Binding Path=ModeArray[2], Mode=TwoWay}"
+                             VerticalAlignment="Center">Regex</RadioButton>
             </StackPanel>
             <TextBox Name="tb_filter"
                      Grid.Row="3"
@@ -212,7 +224,8 @@
                      Height="30"
                      Margin="5,0,0,0"
                      VerticalAlignment="Center"
-                     VerticalContentAlignment="Center"/>
+                     VerticalContentAlignment="Center"
+                     Text="{Binding FilterString}" />
             <Button Name="btn_applyTextFilter"
                     Grid.Row="3"
                     Grid.Column="4">Apply</Button>
@@ -228,7 +241,7 @@
             </Grid.ColumnDefinitions>
             <TreeView Name="tv_components"
                       Grid.Row="0"
-                      Grid.Column="0"                      
+                      Grid.Column="0"
                       ItemsSource="{Binding TreeElems}"
                       MinWidth="150"
                       Margin="5,0,0,0">
@@ -266,7 +279,7 @@
                         <DataGridTextColumn Header="Source"
                                             Binding="{Binding Path=Source}"
                                             IsReadOnly="True"
-                                            FontFamily="Consolas"/>
+                                            FontFamily="Consolas" />
                         <DataGridTemplateColumn Width="*"
                                                 Header="Message"
                                                 IsReadOnly="True">

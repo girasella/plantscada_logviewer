@@ -47,7 +47,9 @@ namespace PlantSCADA_Logviewer
 
         static MainViewModel _instance;
 
-        string _logsPath="";
+        string _logsPath="", _filterString="";
+
+        private bool[] _modeArray = new bool[] { true, false, false };
 
         ObservableCollection<INodeLog> _treeElems;
 
@@ -55,7 +57,9 @@ namespace PlantSCADA_Logviewer
 
         TimeFilter _filterTime;
 
-        ICommand _filterSetup, _setTree, _browseFolders,_applyTimeFilter;
+
+
+        ICommand  _setTree, _browseFolders,_applyTimeFilter;
 
         LogView _logView;
 
@@ -73,19 +77,36 @@ namespace PlantSCADA_Logviewer
                 return _instance;
             }
         }
-
+   
+        public bool[] ModeArray
+        {
+            get { return _modeArray; }
+        }
+        public int SelectedMode
+        {
+            get { return Array.IndexOf(_modeArray, true); }
+        }
         public string LogsPath
         {
             get
             {
-                return _logsPath;
+                return LogsPath1;
             }
             set { 
-                _logsPath = value; 
+                LogsPath1 = value; 
                 OnPropertyChanged();            
             }
         }
 
+        public string FilterString
+        {
+            get { return _filterString; }
+            set
+            {
+                _filterString = value;
+                OnPropertyChanged();
+            }
+        }
         public TimeFilter FilterTime
         {
             get { return _filterTime; }
@@ -97,7 +118,6 @@ namespace PlantSCADA_Logviewer
 
         }
 
-        public ICommand FilterSetup { get => _filterSetup; set => _filterSetup = value; }
         public ObservableCollection<INodeLog> TreeElems
         {
             get => _treeElems;
@@ -144,6 +164,7 @@ namespace PlantSCADA_Logviewer
         }
 
         public CollectionViewSource ViewSource { get => _viewSource; set => _viewSource = value; }
+        public string LogsPath1 { get => _logsPath; set => _logsPath = value; }
 
         void BrowseDirs()
         {
@@ -253,7 +274,6 @@ namespace PlantSCADA_Logviewer
 
         private void InitCommands()
         {
-            FilterSetup = new DelegateCommand<int>((par) => FilterTime.FilterFromNow(par));
             SetTree = new DelegateCommand(() => ScanLogDirectory(LogsPath));
             BrowseFolders = new DelegateCommand(() => BrowseDirs());
             ApplyTimeFilter = new DelegateCommand(() => ApplyTimeFilterExec());
