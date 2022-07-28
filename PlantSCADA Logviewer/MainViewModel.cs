@@ -9,12 +9,16 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Forms;
 using System.Windows.Data;
+using System.Text.RegularExpressions;
 
 namespace PlantSCADA_Logviewer
 {
     internal class MainViewModel : ViewModelBase
     {
 
+        /// <summary>
+        /// This constructor is used only to see sample data in VS Designer Window.
+        /// </summary>
         public MainViewModel()
         {
             FilterTime = new TimeFilter();
@@ -43,11 +47,14 @@ namespace PlantSCADA_Logviewer
             ViewSource.Source = LogViewer;
             ViewSource.SortDescriptions.Add(new SortDescription("Date", ListSortDirection.Ascending));
             TreeElems = new ObservableCollection<INodeLog>();
+            filterPredicate = new Predicate<object>(ApplyStringFilter);
         }
 
         static MainViewModel _instance;
 
-        string _logsPath="", _filterString="";
+        string _logsPath="", _filterArgument="";
+
+        Predicate<object> filterPredicate;
 
         private bool[] _modeArray = new bool[] { true, false, false };
 
@@ -57,9 +64,7 @@ namespace PlantSCADA_Logviewer
 
         TimeFilter _filterTime;
 
-
-
-        ICommand  _setTree, _browseFolders,_applyTimeFilter;
+        ICommand  _setTree, _browseFolders,_applyTimeFilter, _applyTextFilter;
 
         LogView _logView;
 
@@ -67,6 +72,7 @@ namespace PlantSCADA_Logviewer
 
         List<Tuple<string,int>> _timeFilterChoices = new List<Tuple<string,int>>();
 
+        bool _caseSensitive;
 
         internal static MainViewModel Instance
         {
@@ -82,6 +88,20 @@ namespace PlantSCADA_Logviewer
         {
             get { return _modeArray; }
         }
+
+        public bool CaseSensitive
+        {
+            get
+            {
+                return _caseSensitive;
+            }
+            set
+            {
+                _caseSensitive = value;
+                OnPropertyChanged();
+            }
+        }
+
         public int SelectedMode
         {
             get { return Array.IndexOf(_modeArray, true); }
@@ -98,15 +118,17 @@ namespace PlantSCADA_Logviewer
             }
         }
 
-        public string FilterString
+        public string FilterArgument
         {
-            get { return _filterString; }
+            get { return _filterArgument; }
             set
             {
-                _filterString = value;
+                _filterArgument = value;
                 OnPropertyChanged();
             }
         }
+
+
         public TimeFilter FilterTime
         {
             get { return _filterTime; }
@@ -131,9 +153,21 @@ namespace PlantSCADA_Logviewer
         public ICommand SetTree { 
             get => _setTree; 
             set => _setTree = value; }
-        public ICommand BrowseFolders { get => _browseFolders; set => _browseFolders = value; }
+        public ICommand BrowseFolders { 
+            get => _browseFolders; 
+            set => _browseFolders = value; 
+        }
+
+
+        public ICommand ApplyTextFilter
+        {
+            get => _applyTextFilter;
+            set => _applyTextFilter = value;
+        }
+        public ICommand ApplyTimeFilter { get => _applyTimeFilter; set => _applyTimeFilter = value; }
+
         public LogView LogViewer
-        { 
+        {
             get
             {
                 return _logView;
@@ -143,10 +177,9 @@ namespace PlantSCADA_Logviewer
                 _logView = value;
                 OnPropertyChanged();
             }
-        
+
         }
 
-        public ICommand ApplyTimeFilter { get => _applyTimeFilter; set => _applyTimeFilter = value; }
         public List<Tuple<string, int>> TimeFilterChoices { get => _timeFilterChoices; set => _timeFilterChoices = value; }
         public int HoursBefore {
             get { 
@@ -258,6 +291,35 @@ namespace PlantSCADA_Logviewer
                 TreeElems.Add(elem.Value);
             
         }
+        
+
+
+
+        internal void TextFilterExec()
+        {
+            if (string.IsNullOrEmpty(FilterArgument))
+                ViewSource.View.Filter = null;
+            else
+                ViewSource.View.Filter = filterPredicate;
+
+        }
+        internal bool ApplyStringFilter(object par) {
+            LogEntry lEntry = par as LogEntry;
+            string message = CaseSensitive ? lEntry.Message : lEntry.Message.ToLower();
+            string filterArg = CaseSensitive ? FilterArgument : FilterArgument.ToLower();
+            switch (SelectedMode)
+            {
+                case 0:
+                    return message.Contains(filterArg);
+                case 1:
+                    return !message.Contains(filterArg);
+                case 2:
+                    return CaseSensitive ? Regex.IsMatch(lEntry.Message, FilterArgument) : Regex.IsMatch(lEntry.Message, FilterArgument, RegexOptions.IgnoreCase);                  
+                default:
+                    return true;
+            }
+        }
+
 
         private void InitTimeFilterChoices()
         {
@@ -277,6 +339,7 @@ namespace PlantSCADA_Logviewer
             SetTree = new DelegateCommand(() => ScanLogDirectory(LogsPath));
             BrowseFolders = new DelegateCommand(() => BrowseDirs());
             ApplyTimeFilter = new DelegateCommand(() => ApplyTimeFilterExec());
+            ApplyTextFilter = new DelegateCommand(() => TextFilterExec());
         }
     
         private void ApplyTimeFilterExec()

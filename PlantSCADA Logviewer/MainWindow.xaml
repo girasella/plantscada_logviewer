@@ -216,6 +216,10 @@
                 <RadioButton GroupName="Mode"
                              IsChecked="{Binding Path=ModeArray[2], Mode=TwoWay}"
                              VerticalAlignment="Center">Regex</RadioButton>
+                <CheckBox Content="Case-Sensitive"
+                          VerticalAlignment="Center" 
+                          Margin="18,7,0,0"
+                          IsChecked="{Binding CaseSensitive}"/>
             </StackPanel>
             <TextBox Name="tb_filter"
                      Grid.Row="3"
@@ -225,8 +229,9 @@
                      Margin="5,0,0,0"
                      VerticalAlignment="Center"
                      VerticalContentAlignment="Center"
-                     Text="{Binding FilterString}" />
+                     Text="{Binding FilterArgument}" />
             <Button Name="btn_applyTextFilter"
+                    Command="{Binding ApplyTextFilter}"
                     Grid.Row="3"
                     Grid.Column="4">Apply</Button>
 
