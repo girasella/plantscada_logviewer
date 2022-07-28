@@ -14,10 +14,10 @@ DataServer - LocalServer - RemoteServer - Cluster
 
 TODO: 
 Fix hour/minutes textbox check
-Add string filter include/exclude
-Add string filter regex
 Add checkbox function for component
 Add checkbox function for cluster
 Add "Open file" option for groups
-Fix files filter (check both for *.bak and *.dat)
 Add "Export to CSV" option on datagrid
+Add "Exclude/include filter on this message" on datagrid
+Add copy to clipboard option on datagrid
+Add search message option on datagrid
