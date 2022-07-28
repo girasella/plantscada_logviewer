@@ -21,11 +21,11 @@ namespace PlantSCADA_Logviewer
         /// </summary>
         public MainViewModel()
         {
-            FilterTime = new TimeFilter();
+            TimeRange = new TimeInterval();
             InitCommands();
             InitTimeFilterChoices();
             LogsPath = "C:\\ProgramData\\Aveva\\Citect SCADA 2018 R2\\Logs";
-            LogViewer = new LogView(FilterTime);
+            LogViewer = new LogView(TimeRange);
             ViewSource.Source = LogViewer;
             TreeElems = new ObservableCollection<INodeLog>();
             LogCluster cluster = new LogCluster("Cluster1");
@@ -38,11 +38,11 @@ namespace PlantSCADA_Logviewer
         }
         public MainViewModel(bool designer)
         {
-            FilterTime = new TimeFilter();
+            TimeRange = new TimeInterval();
             InitCommands();
             InitTimeFilterChoices();
             LogsPath = "C:\\ProgramData\\Aveva\\Citect SCADA 2018 R2\\Logs";
-            LogViewer = new LogView(FilterTime);
+            LogViewer = new LogView(TimeRange);
             ViewSource = new CollectionViewSource();
             ViewSource.Source = LogViewer;
             ViewSource.SortDescriptions.Add(new SortDescription("Date", ListSortDirection.Ascending));
@@ -62,7 +62,7 @@ namespace PlantSCADA_Logviewer
 
         CollectionViewSource _viewSource;
 
-        TimeFilter _filterTime;
+        TimeInterval _timeRange;
 
         ICommand  _setTree, _browseFolders,_applyTimeFilter, _applyTextFilter;
 
@@ -70,7 +70,7 @@ namespace PlantSCADA_Logviewer
 
         int _hoursBefore;
 
-        List<Tuple<string,int>> _timeFilterChoices = new List<Tuple<string,int>>();
+        List<Tuple<string,int>> _timeRangeChoices = new List<Tuple<string,int>>();
 
         bool _caseSensitive;
 
@@ -129,12 +129,12 @@ namespace PlantSCADA_Logviewer
         }
 
 
-        public TimeFilter FilterTime
+        public TimeInterval TimeRange
         {
-            get { return _filterTime; }
+            get { return _timeRange; }
 
             set { 
-                _filterTime = value;
+                _timeRange = value;
                 OnPropertyChanged(); 
             }
 
@@ -180,7 +180,7 @@ namespace PlantSCADA_Logviewer
 
         }
 
-        public List<Tuple<string, int>> TimeFilterChoices { get => _timeFilterChoices; set => _timeFilterChoices = value; }
+        public List<Tuple<string, int>> TimeRangeChoices { get => _timeRangeChoices; set => _timeRangeChoices = value; }
         public int HoursBefore {
             get { 
                 return _hoursBefore;
@@ -189,10 +189,10 @@ namespace PlantSCADA_Logviewer
                 if (value == _hoursBefore) return;
 
                 _hoursBefore = value;
-                FilterTime.DateStart.Timestamp = DateTime.Now - new TimeSpan(_hoursBefore,0,0);
-                FilterTime.DateEnd.Timestamp = DateTime.Now;
+                TimeRange.DateStart.Timestamp = DateTime.Now - new TimeSpan(_hoursBefore,0,0);
+                TimeRange.DateEnd.Timestamp = DateTime.Now;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(FilterTime));            
+                OnPropertyChanged(nameof(TimeRange));            
             } 
         }
 
@@ -222,7 +222,7 @@ namespace PlantSCADA_Logviewer
 
             foreach (FileInfo file in files)
             {
-                if (file.Extension != ".dat" && file.Extension != ".log")
+                if (file.Extension != ".dat" && file.Extension != ".log" && file.Extension != ".bak")
                     continue;
 
                 string fName = file.Name.ToLower();
@@ -292,9 +292,6 @@ namespace PlantSCADA_Logviewer
             
         }
         
-
-
-
         internal void TextFilterExec()
         {
             if (string.IsNullOrEmpty(FilterArgument))
@@ -323,14 +320,15 @@ namespace PlantSCADA_Logviewer
 
         private void InitTimeFilterChoices()
         {
-            TimeFilterChoices = new List<Tuple<string, int>>()
+            TimeRangeChoices = new List<Tuple<string, int>>()
             {
                 new Tuple<string,int>("Last Hour",1),
                 new Tuple<string,int>("Last 6 Hours",6),
                 new Tuple<string, int>("Last 24 Hours", 24),
                 new Tuple<string, int>("Last 48 Hours", 48),
                 new Tuple<string, int>("Last 7 Days", 168),
-                new Tuple<string, int>("Last 30 days", 24 * 30)
+                new Tuple<string, int>("Last 30 days", 24 * 30),
+                new Tuple<string, int>("Last year", 24 * 365)
             };
         }
 
@@ -344,7 +342,7 @@ namespace PlantSCADA_Logviewer
     
         private void ApplyTimeFilterExec()
         {
-            LogViewer.ApplyTimeFilter(FilterTime.DateStart.Timestamp, FilterTime.DateEnd.Timestamp);
+            LogViewer.ApplyTimeFilter(TimeRange.DateStart.Timestamp, TimeRange.DateEnd.Timestamp);
             ViewSource.View.Refresh();
         }
     }

@@ -128,18 +128,18 @@
                             HorizontalAlignment="Left">
                     <DatePicker Name="dp_dateStart"
                                 Height="30"
-                                SelectedDate="{Binding FilterTime.DateStart.SelectedDay}" />
+                                SelectedDate="{Binding TimeRange.DateStart.SelectedDay}" />
                     <Border BorderThickness="1"
                             BorderBrush="Gray"
                             VerticalAlignment="Center">
                         <StackPanel Orientation="Horizontal"
                                     Height="28">
-                            <TextBox Text="{Binding FilterTime.DateStart.Hours, StringFormat='00'}"
+                            <TextBox Text="{Binding TimeRange.DateStart.Hours, StringFormat='00'}"
                                      Style="{StaticResource timeTextBox}"
                                      PreviewTextInput="CheckTimeInput"
                                      Tag="H" />
                             <TextBlock Style="{StaticResource timeSeparator}" />
-                            <TextBox Text="{Binding FilterTime.DateStart.Minutes, StringFormat='00'}"
+                            <TextBox Text="{Binding TimeRange.DateStart.Minutes, StringFormat='00'}"
                                      Style="{StaticResource timeTextBox}"
                                      PreviewTextInput="CheckTimeInput"
                                      Tag="M" />
@@ -157,17 +157,17 @@
                 <StackPanel Orientation="Horizontal">
                     <DatePicker Name="dp_dateEnd"
                                 Height="30"
-                                SelectedDate="{Binding FilterTime.DateEnd.SelectedDay}" />
+                                SelectedDate="{Binding TimeRange.DateEnd.SelectedDay}" />
                     <Border BorderBrush="Gray"
                             BorderThickness="1">
                         <StackPanel Orientation="Horizontal"
                                     Height="28">
-                            <TextBox Text="{Binding FilterTime.DateEnd.Hours, StringFormat='00'}"
+                            <TextBox Text="{Binding TimeRange.DateEnd.Hours, StringFormat='00'}"
                                      Style="{StaticResource timeTextBox}"
                                      PreviewTextInput="CheckTimeInput"
                                      Tag="H" />
                             <TextBlock Style="{StaticResource timeSeparator}" />
-                            <TextBox Text="{Binding FilterTime.DateEnd.Minutes, StringFormat='00'}"
+                            <TextBox Text="{Binding TimeRange.DateEnd.Minutes, StringFormat='00'}"
                                      Style="{StaticResource timeTextBox}"
                                      PreviewTextInput="CheckTimeInput"
                                      Tag="M" />
@@ -181,7 +181,7 @@
                       Width="185"
                       Height="30"
                       Margin="-5,0,0,0"
-                      ItemsSource="{Binding TimeFilterChoices}"
+                      ItemsSource="{Binding TimeRangeChoices}"
                       DisplayMemberPath="Item1"
                       SelectedValuePath="Item2"
                       SelectedValue="{Binding HoursBefore}"

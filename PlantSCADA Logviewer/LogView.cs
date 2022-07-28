@@ -14,13 +14,13 @@ namespace PlantSCADA_Logviewer
 
         List<LogGroup> groups;
 
-        TimeFilter _timeInterval;
+        TimeInterval _timeInterval;
 
-        public LogView(TimeFilter tf)
+        public LogView(TimeInterval tf)
         {
             Name = "";
             groups = new List<LogGroup>();
-            TimeInterval = new TimeFilter(tf.DateStart, tf.DateEnd);
+            TimeInterval = new TimeInterval(tf.DateStart, tf.DateEnd);
         }
 
         //public LogView(string name)
@@ -40,7 +40,7 @@ namespace PlantSCADA_Logviewer
             set { _name = value; }
         }
 
-        internal TimeFilter TimeInterval { get => _timeInterval; set => _timeInterval = value; }
+        internal TimeInterval TimeInterval { get => _timeInterval; set => _timeInterval = value; }
 
         public void ApplyTimeFilter(DateTime start, DateTime end)
         {

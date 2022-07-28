@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace PlantSCADA_Logviewer
 {
-    internal class TimeFilter : ViewModelBase
+    internal class TimeInterval : ViewModelBase
     {
         DateTimeWrapper _dateStart;
         DateTimeWrapper _dateEnd;
 
-        public TimeFilter()
+        public TimeInterval()
         {
             _dateEnd = new DateTimeWrapper(DateTime.Now);
-            _dateStart = new DateTimeWrapper(DateTime.Now.AddDays(-7));
+            _dateStart = new DateTimeWrapper(DateTime.Now.AddYears(-1));
         }
 
-        public TimeFilter(DateTimeWrapper dtStart, DateTimeWrapper dtEnd)
+        public TimeInterval(DateTimeWrapper dtStart, DateTimeWrapper dtEnd)
         {
-            _dateEnd = new DateTimeWrapper(dtStart.Timestamp);
-            _dateStart = new DateTimeWrapper(dtEnd.Timestamp);
+            _dateEnd = new DateTimeWrapper(dtEnd.Timestamp);
+            _dateStart = new DateTimeWrapper(dtStart.Timestamp);
         }
 
         public DateTimeWrapper DateStart
@@ -44,18 +44,6 @@ namespace PlantSCADA_Logviewer
                 _dateEnd = value;
                 OnPropertyChanged(); 
             }
-        }
-
-
-        public void FilterSetup(DateTime start, DateTime end)
-        {
-            DateStart.Timestamp = start;
-            DateEnd.Timestamp = end;
-        }
-        public void FilterFromNow(int nHours)
-        {
-            DateStart.Timestamp = DateTime.Now.Subtract(new TimeSpan(nHours,0,0));
-            DateEnd.Timestamp = DateTime.Now;
         }
 
     }
