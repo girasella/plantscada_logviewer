@@ -40,5 +40,14 @@ namespace PlantSCADA_Logviewer
 
             tbox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
         }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox cbox = sender as ComboBox;
+
+            cbox.SelectedIndex = -1;
+
+            
+        }
     }
 }

@@ -187,7 +187,6 @@ namespace PlantSCADA_Logviewer
             }
             set {
                 if (value == _hoursBefore) return;
-
                 _hoursBefore = value;
                 TimeRange.DateStart.Timestamp = DateTime.Now - new TimeSpan(_hoursBefore,0,0);
                 TimeRange.DateEnd.Timestamp = DateTime.Now;

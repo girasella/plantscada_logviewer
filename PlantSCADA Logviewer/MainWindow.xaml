@@ -180,7 +180,7 @@
             </StackPanel>
             <ComboBox Grid.Column="2"
                       Grid.Row="1"
-                      Width="185"
+                      Width="190"
                       Height="30"
                       Margin="-5,0,0,0"
                       ItemsSource="{Binding TimeRangeChoices}"
@@ -190,8 +190,15 @@
                       SelectedIndex="0"
                       HorizontalAlignment="Right"
                       VerticalContentAlignment="Center"
-                      VerticalAlignment="Bottom">
+                      VerticalAlignment="Bottom"
+                      SelectionChanged="ComboBox_SelectionChanged"
+                      Validation.ErrorTemplate="{x:Null}">
             </ComboBox>
+            <TextBlock Grid.Column="2"
+                       Grid.Row="1"
+                       Margin="0,20,55,0"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center">Select Preset...</TextBlock>
             <Button Grid.Row="1"
                     Grid.Column="4"
                     Name="btn_Set"
@@ -228,7 +235,7 @@
                      Grid.Column="0"
                      Grid.ColumnSpan="4"
                      Height="30"
-                     Margin="5,0,0,0"
+                     Margin="10,0,0,0"
                      VerticalAlignment="Center"
                      VerticalContentAlignment="Center"
                      Text="{Binding FilterArgument}" />
