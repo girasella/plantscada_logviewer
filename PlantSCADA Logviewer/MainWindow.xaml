@@ -76,6 +76,12 @@
                        x:Key="timeTextBox">
                     <Setter Property="Width"
                             Value="20" />
+                    <EventSetter Event="LostFocus"
+                                 Handler="TextBox_LostFocus"/>
+                    <EventSetter Event="PreviewTextInput"
+                                 Handler="CheckTimeInput" />
+                    <Setter Property="MaxLength"
+                            Value="2" />
                     <Setter Property="VerticalContentAlignment"
                             Value="Center" />
                     <Setter Property="Margin"
@@ -136,12 +142,10 @@
                                     Height="28">
                             <TextBox Text="{Binding TimeRange.DateStart.Hours, StringFormat='00'}"
                                      Style="{StaticResource timeTextBox}"
-                                     PreviewTextInput="CheckTimeInput"
                                      Tag="H" />
                             <TextBlock Style="{StaticResource timeSeparator}" />
                             <TextBox Text="{Binding TimeRange.DateStart.Minutes, StringFormat='00'}"
                                      Style="{StaticResource timeTextBox}"
-                                     PreviewTextInput="CheckTimeInput"
                                      Tag="M" />
                         </StackPanel>
                     </Border>
@@ -164,12 +168,10 @@
                                     Height="28">
                             <TextBox Text="{Binding TimeRange.DateEnd.Hours, StringFormat='00'}"
                                      Style="{StaticResource timeTextBox}"
-                                     PreviewTextInput="CheckTimeInput"
                                      Tag="H" />
                             <TextBlock Style="{StaticResource timeSeparator}" />
                             <TextBox Text="{Binding TimeRange.DateEnd.Minutes, StringFormat='00'}"
                                      Style="{StaticResource timeTextBox}"
-                                     PreviewTextInput="CheckTimeInput"
                                      Tag="M" />
                         </StackPanel>
                     </Border>

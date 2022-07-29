@@ -28,30 +28,17 @@ namespace PlantSCADA_Logviewer
 
         private void CheckTimeInput(object sender, TextCompositionEventArgs e)
         {
+            if (!int.TryParse(e.Text, out int number))
+                e.Handled = true;
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
             TextBox tbox = sender as TextBox;
+            if (string.IsNullOrWhiteSpace(tbox.Text))
+                tbox.Text = "00";
 
-            string content = tbox.Text + e.Text;
-
-            int limit = tbox.Tag.ToString() == "H" ? 23 : 59;
-            
-            if (content.Length > 2)
-            {
-                e.Handled = true;
-                return;
-            }
-
-            if (int.TryParse(content, out int parsedContent))
-            {
-                if (parsedContent > limit)
-                    e.Handled = true;
-            }
-            else
-            {
-                e.Handled = true;
-            }
-            
-
-
+            tbox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
         }
     }
 }

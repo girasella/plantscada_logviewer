@@ -40,7 +40,10 @@ namespace PlantSCADA_Logviewer
             }
             set
             {
-                _hours = value;
+                if (value >= 24)
+                    _hours = 23;
+                else
+                    _hours = value;
                 OnPropertyChanged();
             }
         }
@@ -53,7 +56,10 @@ namespace PlantSCADA_Logviewer
             }
             set
             {
-                _minutes = value;
+                if (value >= 60)
+                    _minutes = 59;
+                else
+                    _minutes = value;
                 OnPropertyChanged();
             }
         }
