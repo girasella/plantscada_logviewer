@@ -95,11 +95,14 @@ namespace PlantSCADA_Logviewer
                 {
                     MainViewModel.Instance.LogViewer.RemoveGroup(this);
                 }
+
                 MainViewModel.Instance.ViewSource.View.Refresh();
 
-                _selected = value;
+               _selected = value;
 
                 OnPropertyChanged();
+
+                Parent.UpdateSelectedProperty();
             }
         }
 
@@ -116,6 +119,11 @@ namespace PlantSCADA_Logviewer
                 }
                 return _logEntries;
             }
+        }
+        public void UpdateSelectedProperty()
+        {
+            OnPropertyChanged(nameof(Selected));
+
         }
     }
 }

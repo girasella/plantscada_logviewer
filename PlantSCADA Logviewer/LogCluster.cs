@@ -29,10 +29,32 @@ namespace PlantSCADA_Logviewer
 
         public bool Selected
         {
-            get {
-                return false;
+            get
+            {
+                return Children.All(x => x.Selected);
             }
-            set { }
+            set
+            {
+
+                if (value && !Children.All(x => x.Selected))
+                {
+                    foreach (var child in Children)
+                    {
+                        child.Selected = true;
+                    }
+                }
+                else
+                {
+                    if (!value)
+                    {
+                        foreach (var child in Children)
+                        {
+                            child.Selected = false;
+                        }
+                    }
+                }
+                Parent?.UpdateSelectedProperty();
+            }
 
         }
 
@@ -56,6 +78,13 @@ namespace PlantSCADA_Logviewer
         public override string ToString()
         {
             return Name;
+        }
+
+        public void UpdateSelectedProperty()
+        {
+            OnPropertyChanged(nameof(Selected));
+            if (Parent != null)
+                Parent.UpdateSelectedProperty();
         }
     }
 }

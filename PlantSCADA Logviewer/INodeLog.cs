@@ -32,7 +32,7 @@ namespace PlantSCADA_Logviewer
         
         public bool Selected { get; set; }
 
-
+        internal void UpdateSelectedProperty();
 
     }
 }
