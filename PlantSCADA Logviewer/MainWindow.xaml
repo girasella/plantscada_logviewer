@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PlantSCADA_Logviewer"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="Plant SCADA log viewer"
+        Title="Plant SCADA Log Viewer"
         d:DataContext="{d:DesignInstance local:MainViewModel, IsDesignTimeCreatable=True}"
         Height="450"
         Width="800"
@@ -25,7 +25,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="40" />
                 <RowDefinition Height="50" />
-                <RowDefinition Height="25" />
+                <RowDefinition Height="35" />
                 <RowDefinition Height="40" />
                 <RowDefinition />
             </Grid.RowDefinitions>
@@ -77,7 +77,7 @@
                     <Setter Property="Width"
                             Value="20" />
                     <EventSetter Event="LostFocus"
-                                 Handler="TextBox_LostFocus"/>
+                                 Handler="TextBox_LostFocus" />
                     <EventSetter Event="PreviewTextInput"
                                  Handler="CheckTimeInput" />
                     <Setter Property="MaxLength"
@@ -103,7 +103,6 @@
                             Value=":" />
                 </Style>
             </Grid.Resources>
-
             <TextBox Name="tb_logsPath"
                      Text="{Binding LogsPath}"
                      Grid.Row="0"
@@ -198,7 +197,7 @@
                        Grid.Row="1"
                        Margin="0,20,55,0"
                        HorizontalAlignment="Right"
-                       VerticalAlignment="Center">Select Preset...</TextBlock>
+                       VerticalAlignment="Center">Select Time Preset...</TextBlock>
             <Button Grid.Row="1"
                     Grid.Column="4"
                     Name="btn_Set"
@@ -235,15 +234,16 @@
                      Grid.Column="0"
                      Grid.ColumnSpan="4"
                      Height="30"
-                     Margin="10,0,0,0"
+                     Margin="5,0,0,10"
                      VerticalAlignment="Center"
                      VerticalContentAlignment="Center"
                      Text="{Binding FilterArgument}" />
             <Button Name="btn_applyTextFilter"
                     Command="{Binding ApplyTextFilter}"
                     Grid.Row="3"
-                    Grid.Column="4">Apply</Button>
-
+                    Grid.Column="4"
+                    Margin="0,0,0,10">Apply</Button>
+                    
         </Grid>
 
         <Grid Grid.Row="1"
