@@ -85,5 +85,15 @@ namespace PlantSCADA_Logviewer
             if (Parent != null)
                 Parent.UpdateSelectedProperty();
         }
+
+        void INodeLog.AddChild(INodeLog child)
+        {
+            Children.Add(child);
+        }
+
+        void INodeLog.RemoveChild(INodeLog child)
+        {
+            Children.Remove(child);
+        }
     }
 }

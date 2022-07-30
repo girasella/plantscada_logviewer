@@ -17,18 +17,10 @@ namespace PlantSCADA_Logviewer
 
         public INodeLog Parent { get; set; }
 
-        public void AddChild(INodeLog child) { 
-            Children.Add(child); 
-        }
-        public void RemoveChild(INodeLog child)
-        {
-            Children.Remove(child);
-        }       
+        public void AddChild(INodeLog child);
+        
+        public void RemoveChild(INodeLog child);
 
-       public string ToString()
-        {
-            return Name;
-        }
         
         public bool Selected { get; set; }
 

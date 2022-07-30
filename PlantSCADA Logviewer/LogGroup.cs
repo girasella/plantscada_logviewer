@@ -120,6 +120,15 @@ namespace PlantSCADA_Logviewer
                 return _logEntries;
             }
         }
+        void INodeLog.AddChild(INodeLog child)
+        {
+            Children.Add(child);
+        }
+
+        void INodeLog.RemoveChild(INodeLog child)
+        {
+            Children.Remove(child);
+        }
         public void UpdateSelectedProperty()
         {
             OnPropertyChanged(nameof(Selected));

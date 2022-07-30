@@ -2,9 +2,10 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net4.8</TargetFramework>
     <RootNamespace>PlantSCADA_Logviewer</RootNamespace>
     <Nullable>enable</Nullable>
+	<LangVersion>latest</LangVersion>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>True</UseWindowsForms>
   </PropertyGroup>
