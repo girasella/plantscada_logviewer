@@ -237,7 +237,12 @@
                      Margin="5,0,0,10"
                      VerticalAlignment="Center"
                      VerticalContentAlignment="Center"
-                     Text="{Binding FilterArgument}" />
+                     Text="{Binding FilterArgument, UpdateSourceTrigger=PropertyChanged}">
+                <TextBox.InputBindings>
+                    <KeyBinding Command="{Binding ApplyTextFilter}"
+                                Key="Return" />
+                </TextBox.InputBindings>
+            </TextBox>
             <Button Name="btn_applyTextFilter"
                     Command="{Binding ApplyTextFilter}"
                     Grid.Row="3"
