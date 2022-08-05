@@ -41,7 +41,7 @@ namespace PlantSCADA_Logviewer
             TimeRange = new TimeInterval();
             InitCommands();
             InitTimeFilterChoices();
-            LogsPath = "C:\\ProgramData\\Aveva\\Citect SCADA 2018 R2\\Logs";
+            LoadSettings();
             LogViewer = new LogView(TimeRange);
             ViewSource = new CollectionViewSource();
             ViewSource.Source = LogViewer;
@@ -110,10 +110,10 @@ namespace PlantSCADA_Logviewer
         {
             get
             {
-                return LogsPath1;
+                return _logsPath;
             }
             set { 
-                LogsPath1 = value; 
+                _logsPath = value;                
                 OnPropertyChanged();            
             }
         }
@@ -196,7 +196,6 @@ namespace PlantSCADA_Logviewer
         }
 
         public CollectionViewSource ViewSource { get => _viewSource; set => _viewSource = value; }
-        public string LogsPath1 { get => _logsPath; set => _logsPath = value; }
 
         void BrowseDirs()
         {
@@ -212,6 +211,15 @@ namespace PlantSCADA_Logviewer
         void ScanLogDirectory (string logDir)
         {
             LogViewer.Clear();
+
+            if (!Directory.Exists(logDir))
+            {
+                MessageBox.Show("The specified directory does not exsist!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LogsPath = "";
+                return;
+            }
+
+            ManageLastFolderList(logDir);
 
             DirectoryInfo logsDirectory = new DirectoryInfo(logDir);
             Dictionary<string, LogCluster> clusterMap = new Dictionary<string, LogCluster>();
@@ -355,5 +363,25 @@ namespace PlantSCADA_Logviewer
             LogViewer.ApplyTimeFilter(TimeRange.DateStart.Timestamp, TimeRange.DateEnd.Timestamp);
             ViewSource.View.Refresh();
         }
+
+        private void ManageLastFolderList(string folderName)
+        {
+            if (Settings.Default.LastFolders == null)
+                Settings.Default.LastFolders = new System.Collections.Specialized.StringCollection();
+            if (!Settings.Default.LastFolders.Contains(folderName))
+            {
+                Settings.Default.LastFolders.Insert(0, folderName);
+                if (Settings.Default.LastFolders.Count > 10)
+                    Settings.Default.LastFolders.RemoveAt(10);
+                Settings.Default.Save();
+            }
+        }
+
+        private void LoadSettings ()
+        {
+            if (Settings.Default.LastFolders != null) LogsPath = Settings.Default.LastFolders[0];
+
+        }
+
     }
 }
