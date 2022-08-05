@@ -49,5 +49,12 @@ namespace PlantSCADA_Logviewer
 
             
         }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem mitem = sender as MenuItem;
+            string s = mitem.Tag.ToString();
+            Clipboard.SetText(s);
+        }
     }
 }

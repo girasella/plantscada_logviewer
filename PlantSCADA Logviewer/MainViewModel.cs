@@ -211,6 +211,8 @@ namespace PlantSCADA_Logviewer
 
         void ScanLogDirectory (string logDir)
         {
+            LogViewer.Clear();
+
             DirectoryInfo logsDirectory = new DirectoryInfo(logDir);
             Dictionary<string, LogCluster> clusterMap = new Dictionary<string, LogCluster>();
             Dictionary<string, LogComponent> componentMap = new Dictionary<string, LogComponent>();
@@ -237,7 +239,6 @@ namespace PlantSCADA_Logviewer
                 if (fileNameParts.Length == 2)
                 {
                     LogGroup cGroup = (LogGroup)clientComponent.Children.FirstOrDefault(x => ((LogGroup)x).Type == lType);
-
                                   
 
                     if (cGroup == null)
@@ -310,12 +311,22 @@ namespace PlantSCADA_Logviewer
                 case 1:
                     return !message.Contains(filterArg);
                 case 2:
-                    return CaseSensitive ? Regex.IsMatch(lEntry.Message, FilterArgument) : Regex.IsMatch(lEntry.Message, FilterArgument, RegexOptions.IgnoreCase);                  
+                    return CaseSensitive ? RegexMatch(lEntry.Message, FilterArgument) : RegexMatch(lEntry.Message, FilterArgument, RegexOptions.IgnoreCase);                  
                 default:
                     return true;
             }
         }
 
+        bool RegexMatch(string msg, string pattern, RegexOptions options = RegexOptions.None)
+        {
+            try
+            {
+               return Regex.IsMatch(msg, pattern, options);
+            }
+            catch {
+                return false;
+            }
+        }
 
         private void InitTimeFilterChoices()
         {

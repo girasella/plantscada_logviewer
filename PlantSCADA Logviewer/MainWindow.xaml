@@ -9,8 +9,8 @@
         Title="Plant SCADA Log Viewer"
         d:DataContext="{d:DesignInstance local:MainViewModel, IsDesignTimeCreatable=True}"
         Height="450"
-        Width="800"
-        MinWidth="800">
+        Width="801"
+        MinWidth="801">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="160"></RowDefinition>
@@ -306,7 +306,17 @@
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Message}"
                                                FontFamily="Consolas"
-                                               ToolTip="{Binding Message}" />
+                                               ToolTip="{Binding Message}">
+                                        <TextBlock.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="Copy"
+                                                          Click="MenuItem_Click"
+                                                          Tag="{Binding Message}" />
+                                            </ContextMenu>
+
+                                        </TextBlock.ContextMenu>
+                                        
+                                    </TextBlock>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>

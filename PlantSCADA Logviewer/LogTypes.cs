@@ -5,7 +5,8 @@ public enum LogType {
     Trace,
     Debug,
     Reload,
-    Params
+    Params,
+    IPC
 }
 
 public class LogTypeDictionary
@@ -17,6 +18,7 @@ public class LogTypeDictionary
         {"debug", LogType.Debug },
         {"reloadlog", LogType.Reload },
         {"params", LogType.Params },
+        {"ipc", LogType.IPC }
 
     };
 

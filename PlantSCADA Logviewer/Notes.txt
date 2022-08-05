@@ -13,11 +13,10 @@ Add Agent
 DataServer - LocalServer - RemoteServer - Cluster
 
 TODO: 
-Add checkbox function for component
-Add checkbox function for cluster
 Add "Open file" option for groups
 Add "Export to CSV" option on datagrid
 Add "Exclude/include filter on this message" on datagrid
 Add copy to clipboard option on datagrid
 Add search message option on datagrid
 Fix horizontal scroll on datagrid
+Fix tree building method for multiple files (logarchive)
