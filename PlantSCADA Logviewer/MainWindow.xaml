@@ -120,7 +120,7 @@
             <Button Grid.Column="4"
                     x:Name="btn_Set_Copy"
                     Command="{Binding SetTree}"
-                    Content="Apply" />
+                    Content="Set Folder" />
             <StackPanel Grid.Row="1"
                         Grid.Column="0"
                         Style="{StaticResource DateBox}"
@@ -203,7 +203,7 @@
                     Name="btn_Set"
                     Command="{Binding ApplyTimeFilter}"
                     VerticalAlignment="Bottom">
-                Apply
+                Set Time Range
             </Button>
             <StackPanel Grid.Row="2"
                         Orientation="Horizontal"
@@ -247,7 +247,7 @@
                     Command="{Binding ApplyTextFilter}"
                     Grid.Row="3"
                     Grid.Column="4"
-                    Margin="0,0,0,10">Apply</Button>
+                    Margin="0,0,0,10">Set Filter</Button>
                     
         </Grid>
 
