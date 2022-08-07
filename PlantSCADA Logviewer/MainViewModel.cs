@@ -415,12 +415,11 @@ namespace PlantSCADA_Logviewer
 
         private void LoadSettings()
         {
+            _lastFolders = new ObservableCollection<string>();
             if (Settings.Default.LastFolders != null)
-            {
-                _lastFolders = new ObservableCollection<string>();
+            {                
                 foreach (var item in Settings.Default.LastFolders)
                     _lastFolders.Add(item);
-
                 LogsPath = Settings.Default.LastFolders[0];
             }
             CaseSensitive = Settings.Default.CaseSensitive;
