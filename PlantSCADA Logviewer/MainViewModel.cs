@@ -4,12 +4,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Forms;
 using System.Windows.Data;
 using System.Text.RegularExpressions;
+using System.Collections.Specialized;
 
 namespace PlantSCADA_Logviewer
 {
@@ -29,8 +28,8 @@ namespace PlantSCADA_Logviewer
             ViewSource.Source = LogViewer;
             TreeElems = new ObservableCollection<INodeLog>();
             LogCluster cluster = new LogCluster("Cluster1");
-            LogComponent component = new LogComponent("alarmSrv", ComponentType.Alarm,cluster);
-            LogGroup group = new LogGroup("syslog", LogType.Sys,component);            
+            LogComponent component = new LogComponent("alarmSrv", ComponentType.Alarm, cluster);
+            LogGroup group = new LogGroup("syslog", LogType.Sys, component);
 
             cluster.Children.Add(component);
             component.Children.Add(group);
@@ -52,7 +51,7 @@ namespace PlantSCADA_Logviewer
 
         static MainViewModel _instance;
 
-        string _logsPath="", _filterArgument="";
+        string _logsPath = "", _filterArgument = "";
 
         Predicate<object> filterPredicate;
 
@@ -64,13 +63,13 @@ namespace PlantSCADA_Logviewer
 
         TimeInterval _timeRange;
 
-        ICommand  _setTree, _browseFolders,_applyTimeFilter, _applyTextFilter;
+        ICommand _setTree, _browseFolders, _applyTimeRange, _applyTextFilter;
 
         LogView _logView;
 
         int _hoursBefore;
 
-        List<Tuple<string,int>> _timeRangeChoices = new List<Tuple<string,int>>();
+        List<Tuple<string, int>> _timeRangeChoices = new List<Tuple<string, int>>();
 
         bool _caseSensitive;
 
@@ -83,7 +82,7 @@ namespace PlantSCADA_Logviewer
                 return _instance;
             }
         }
-   
+
         public bool[] ModeArray
         {
             get { return _modeArray; }
@@ -98,6 +97,8 @@ namespace PlantSCADA_Logviewer
             set
             {
                 _caseSensitive = value;
+                Settings.Default.CaseSensitive = _caseSensitive;
+                Settings.Default.Save();
                 OnPropertyChanged();
             }
         }
@@ -112,9 +113,10 @@ namespace PlantSCADA_Logviewer
             {
                 return _logsPath;
             }
-            set { 
-                _logsPath = value;                
-                OnPropertyChanged();            
+            set
+            {
+                _logsPath = value;
+                OnPropertyChanged();
             }
         }
 
@@ -133,11 +135,20 @@ namespace PlantSCADA_Logviewer
         {
             get { return _timeRange; }
 
-            set { 
+            set
+            {
                 _timeRange = value;
-                OnPropertyChanged(); 
+                OnPropertyChanged();
             }
 
+        }
+        ObservableCollection<string> _lastFolders;
+        public ObservableCollection<string> LastFolders
+        {
+            get
+            {
+                return _lastFolders;
+            }
         }
 
         public ObservableCollection<INodeLog> TreeElems
@@ -150,12 +161,15 @@ namespace PlantSCADA_Logviewer
             }
         }
 
-        public ICommand SetTree { 
-            get => _setTree; 
-            set => _setTree = value; }
-        public ICommand BrowseFolders { 
-            get => _browseFolders; 
-            set => _browseFolders = value; 
+        public ICommand SetFolder
+        {
+            get => _setTree;
+            set => _setTree = value;
+        }
+        public ICommand BrowseFolders
+        {
+            get => _browseFolders;
+            set => _browseFolders = value;
         }
 
 
@@ -164,7 +178,7 @@ namespace PlantSCADA_Logviewer
             get => _applyTextFilter;
             set => _applyTextFilter = value;
         }
-        public ICommand ApplyTimeFilter { get => _applyTimeFilter; set => _applyTimeFilter = value; }
+        public ICommand ApplyTimeRange { get => _applyTimeRange; set => _applyTimeRange = value; }
 
         public LogView LogViewer
         {
@@ -181,34 +195,37 @@ namespace PlantSCADA_Logviewer
         }
 
         public List<Tuple<string, int>> TimeRangeChoices { get => _timeRangeChoices; set => _timeRangeChoices = value; }
-        public int HoursBefore {
-            get { 
+        public int HoursBefore
+        {
+            get
+            {
                 return _hoursBefore;
             }
-            set {
+            set
+            {
                 if (value == _hoursBefore) return;
                 _hoursBefore = value;
-                TimeRange.DateStart.Timestamp = DateTime.Now - new TimeSpan(_hoursBefore,0,0);
+                TimeRange.DateStart.Timestamp = DateTime.Now - new TimeSpan(_hoursBefore, 0, 0);
                 TimeRange.DateEnd.Timestamp = DateTime.Now;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(TimeRange));            
-            } 
+                OnPropertyChanged(nameof(TimeRange));
+            }
         }
 
         public CollectionViewSource ViewSource { get => _viewSource; set => _viewSource = value; }
 
-        void BrowseDirs()
+        void BrowseFoldersExec()
         {
             var dialog = new FolderBrowserDialog();
 
             DialogResult result = dialog.ShowDialog();
 
-            if (result == DialogResult.OK) 
+            if (result == DialogResult.OK)
                 LogsPath = dialog.SelectedPath;
 
         }
 
-        void ScanLogDirectory (string logDir)
+        void SetFolderExec(string logDir)
         {
             LogViewer.Clear();
 
@@ -225,9 +242,9 @@ namespace PlantSCADA_Logviewer
             Dictionary<string, LogCluster> clusterMap = new Dictionary<string, LogCluster>();
             Dictionary<string, LogComponent> componentMap = new Dictionary<string, LogComponent>();
 
-            IEnumerable<FileInfo> files =  logsDirectory.EnumerateFiles();
+            IEnumerable<FileInfo> files = logsDirectory.EnumerateFiles();
 
-            LogComponent clientComponent = new LogComponent("Client", ComponentType.Client,null);
+            LogComponent clientComponent = new LogComponent("Client", ComponentType.Client, null);
 
             foreach (FileInfo file in files)
             {
@@ -235,11 +252,11 @@ namespace PlantSCADA_Logviewer
                     continue;
 
                 string fName = file.Name.ToLower();
-                              
+
                 string[] fileNameParts = fName.Split('.');
 
                 string logGroupType = fileNameParts[0];
-                
+
                 LogType? lType = LogTypeDictionary.GetLogType(logGroupType);
                 if (lType == null)
                     continue;
@@ -247,22 +264,22 @@ namespace PlantSCADA_Logviewer
                 if (fileNameParts.Length == 2)
                 {
                     LogGroup cGroup = (LogGroup)clientComponent.Children.FirstOrDefault(x => ((LogGroup)x).Type == lType);
-                                  
+
 
                     if (cGroup == null)
                     {
-                        cGroup = new LogGroup(logGroupType, (LogType)lType,clientComponent);
+                        cGroup = new LogGroup(logGroupType, (LogType)lType, clientComponent);
                         clientComponent.Children.Add(cGroup);
                     }
                     LogFile lgFile = new LogFile(file, cGroup);
                     cGroup.LogFiles.Add(lgFile);
                     continue;
-                }                
+                }
                 if (fileNameParts.Length != 5)
                     continue;
 
                 string logComponentType = fileNameParts[1];
-                string clusterName = fileNameParts[2]; 
+                string clusterName = fileNameParts[2];
                 string logComponentName = fileNameParts[3];
 
                 ComponentType? cType = ComponentDictionary.GetComponent(logComponentType);
@@ -274,11 +291,11 @@ namespace PlantSCADA_Logviewer
 
                 LogCluster currentCluster = clusterMap[clusterName];
 
-                LogComponent currentComponent= (LogComponent) currentCluster.Children.FirstOrDefault(x => ((LogComponent)x).Name == logComponentName);
+                LogComponent currentComponent = (LogComponent)currentCluster.Children.FirstOrDefault(x => ((LogComponent)x).Name == logComponentName);
 
                 if (currentComponent == null)
                 {
-                    currentComponent = new LogComponent(logComponentName, (ComponentType)cType,currentCluster);
+                    currentComponent = new LogComponent(logComponentName, (ComponentType)cType, currentCluster);
                     currentCluster.Children.Add(currentComponent);
                 }
 
@@ -286,10 +303,10 @@ namespace PlantSCADA_Logviewer
 
                 if (currentGroup == null)
                 {
-                    currentGroup = new LogGroup(logGroupType, (LogType)lType,currentComponent);
+                    currentGroup = new LogGroup(logGroupType, (LogType)lType, currentComponent);
                     currentComponent.Children.Add(currentGroup);
                 }
-                LogFile lFile = new LogFile(file,currentGroup);
+                LogFile lFile = new LogFile(file, currentGroup);
                 currentGroup.LogFiles.Add(lFile);
             }
             TreeElems.Clear();
@@ -297,18 +314,22 @@ namespace PlantSCADA_Logviewer
             TreeElems.Add(clientComponent);
             foreach (var elem in clusterMap)
                 TreeElems.Add(elem.Value);
-            
+
         }
-        
+
         internal void TextFilterExec()
         {
+            Settings.Default.FilterMode = SelectedMode;
+            Settings.Default.Save();
             if (string.IsNullOrEmpty(FilterArgument))
                 ViewSource.View.Filter = null;
             else
                 ViewSource.View.Filter = filterPredicate;
 
         }
-        internal bool ApplyStringFilter(object par) {
+        internal bool ApplyStringFilter(object par)
+        {           
+
             LogEntry lEntry = par as LogEntry;
             string message = CaseSensitive ? lEntry.Message : lEntry.Message.ToLower();
             string filterArg = CaseSensitive ? FilterArgument : FilterArgument.ToLower();
@@ -319,19 +340,22 @@ namespace PlantSCADA_Logviewer
                 case 1:
                     return !message.Contains(filterArg);
                 case 2:
-                    return CaseSensitive ? RegexMatch(lEntry.Message, FilterArgument) : RegexMatch(lEntry.Message, FilterArgument, RegexOptions.IgnoreCase);                  
+                    return CaseSensitive ? RegexMatch(lEntry.Message, FilterArgument) : RegexMatch(lEntry.Message, FilterArgument, RegexOptions.IgnoreCase);
                 default:
                     return true;
             }
+
+
         }
 
         bool RegexMatch(string msg, string pattern, RegexOptions options = RegexOptions.None)
         {
             try
             {
-               return Regex.IsMatch(msg, pattern, options);
+                return Regex.IsMatch(msg, pattern, options);
             }
-            catch {
+            catch
+            {
                 return false;
             }
         }
@@ -352,34 +376,62 @@ namespace PlantSCADA_Logviewer
 
         private void InitCommands()
         {
-            SetTree = new DelegateCommand(() => ScanLogDirectory(LogsPath));
-            BrowseFolders = new DelegateCommand(() => BrowseDirs());
-            ApplyTimeFilter = new DelegateCommand(() => ApplyTimeFilterExec());
+            SetFolder = new DelegateCommand(() => SetFolderExec(LogsPath));
+            BrowseFolders = new DelegateCommand(() => BrowseFoldersExec());
+            ApplyTimeRange = new DelegateCommand(() => ApplyTimeRangeExec());
             ApplyTextFilter = new DelegateCommand(() => TextFilterExec());
         }
-    
-        private void ApplyTimeFilterExec()
+
+        private void ApplyTimeRangeExec()
         {
-            LogViewer.ApplyTimeFilter(TimeRange.DateStart.Timestamp, TimeRange.DateEnd.Timestamp);
+            LogViewer.ApplyTimeRange(TimeRange.DateStart.Timestamp, TimeRange.DateEnd.Timestamp);
             ViewSource.View.Refresh();
+
+            Settings.Default.DateStart = TimeRange.DateStart.Timestamp.ToString("yyyy-MM-dd HH:mm");
+            Settings.Default.DateEnd = TimeRange.DateEnd.Timestamp.ToString("yyyy-MM-dd HH:mm");
+            Settings.Default.Save();
+            
         }
 
         private void ManageLastFolderList(string folderName)
         {
-            if (Settings.Default.LastFolders == null)
-                Settings.Default.LastFolders = new System.Collections.Specialized.StringCollection();
-            if (!Settings.Default.LastFolders.Contains(folderName))
+            string currentLPath = LogsPath;
+            if (LastFolders.Contains(folderName))
             {
-                Settings.Default.LastFolders.Insert(0, folderName);
-                if (Settings.Default.LastFolders.Count > 10)
-                    Settings.Default.LastFolders.RemoveAt(10);
-                Settings.Default.Save();
+                LastFolders.Remove(folderName);
             }
+            LastFolders.Insert(0, folderName);
+            if (LastFolders.Count > 10)
+                LastFolders.RemoveAt(10);
+
+            if (Settings.Default.LastFolders == null)
+                Settings.Default.LastFolders = new StringCollection();
+            Settings.Default.LastFolders.Clear();
+            foreach(var item in LastFolders)
+                Settings.Default.LastFolders.Add(item);
+            Settings.Default.Save();
+            LogsPath = currentLPath; 
         }
 
-        private void LoadSettings ()
+        private void LoadSettings()
         {
-            if (Settings.Default.LastFolders != null) LogsPath = Settings.Default.LastFolders[0];
+            if (Settings.Default.LastFolders != null)
+            {
+                _lastFolders = new ObservableCollection<string>();
+                foreach (var item in Settings.Default.LastFolders)
+                    _lastFolders.Add(item);
+
+                LogsPath = Settings.Default.LastFolders[0];
+            }
+            CaseSensitive = Settings.Default.CaseSensitive;
+            if (!String.IsNullOrEmpty(Settings.Default.DateStart))
+                TimeRange.DateStart.Timestamp = DateTime.ParseExact(Settings.Default.DateStart, "yyyy-MM-dd HH:mm", System.Globalization.CultureInfo.CurrentCulture);
+
+            if (!String.IsNullOrEmpty(Settings.Default.DateEnd))
+                TimeRange.DateEnd.Timestamp = DateTime.ParseExact(Settings.Default.DateEnd, "yyyy-MM-dd HH:mm", System.Globalization.CultureInfo.CurrentCulture);
+
+            ModeArray[Settings.Default.FilterMode] = true;
+
 
         }
 

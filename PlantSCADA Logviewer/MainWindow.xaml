@@ -103,15 +103,16 @@
                             Value=":" />
                 </Style>
             </Grid.Resources>
-            <TextBox Name="tb_logsPath"
+            <ComboBox Name="tb_logsPath"
                      Text="{Binding LogsPath}"
                      Grid.Row="0"
                      Grid.ColumnSpan="3"
                      Grid.Column="0"
-                     TextAlignment="Left"
                      VerticalContentAlignment="Center"
                      HorizontalContentAlignment="Left"
                      Margin="5,0,0,0"
+                     ItemsSource="{Binding LastFolders}"
+                     IsEditable="True"
                      Height="30" />
             <Button Grid.Row="0"
                     Grid.Column="3"
@@ -119,7 +120,7 @@
                     Command="{Binding BrowseFolders}">Browse</Button>
             <Button Grid.Column="4"
                     x:Name="btn_Set_Copy"
-                    Command="{Binding SetTree}"
+                    Command="{Binding SetFolder}"
                     Content="Set Folder" />
             <StackPanel Grid.Row="1"
                         Grid.Column="0"
@@ -201,7 +202,7 @@
             <Button Grid.Row="1"
                     Grid.Column="4"
                     Name="btn_Set"
-                    Command="{Binding ApplyTimeFilter}"
+                    Command="{Binding ApplyTimeRange}"
                     VerticalAlignment="Bottom">
                 Set Time Range
             </Button>

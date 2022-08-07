@@ -42,7 +42,7 @@ namespace PlantSCADA_Logviewer
 
         internal TimeInterval TimeInterval { get => _timeInterval; set => _timeInterval = value; }
 
-        public void ApplyTimeFilter(DateTime start, DateTime end)
+        public void ApplyTimeRange(DateTime start, DateTime end)
         {
             TimeInterval.DateStart = new DateTimeWrapper(start);
             TimeInterval.DateEnd = new DateTimeWrapper(end);
