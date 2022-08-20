@@ -11,3 +11,5 @@ Usage:
 - Set up start date and end date, then click "Apply" to restrict log search to a given time interval.
 
 - Set up filter mode and type a filter string, then press Enter or click "Apply" to filter log messages. 
+
+![Screenshot Sample](Screenshot_Sample.png "Screenshot Sample")
