@@ -276,6 +276,7 @@ namespace PlantSCADA_Logviewer
             IEnumerable<FileInfo> files = logsDirectory.EnumerateFiles();
 
             LogComponent clientComponent = new LogComponent("Client", ComponentType.Client, null);
+            INodeLog deplCluster = null;
             TreeElems.Clear();
             foreach (FileInfo file in files)
             {
@@ -291,6 +292,27 @@ namespace PlantSCADA_Logviewer
                 LogType? lType = LogTypeDictionary.GetLogType(logGroupType);
                 if (lType == null)
                     continue;
+                if (fName.Contains("se.asb.deployment.server.windowsservice") || fName.Contains("se.asb.deployment.node.windowsservice"))
+                {
+                    string componentName = fileNameParts[4];
+                    if (componentName != "server" && componentName != "node") continue;
+                    
+                    if (deplCluster == null) deplCluster = new LogCluster("Deployment");
+   
+                    INodeLog deplComponent = deplCluster.Children.FirstOrDefault(x => x.Name == componentName) as LogComponent;
+                    if (deplComponent == null)
+                    {
+                        deplComponent = new LogComponent(componentName, (ComponentType) ComponentDictionary.GetComponent(componentName),deplCluster);
+                        deplCluster.AddChild(deplComponent);
+                        LogGroup deplGroup = new LogGroup("tracelog", (LogType)lType, deplComponent);
+                        deplComponent.AddChild(deplGroup);                        
+                    }
+                    LogGroup dGroup = deplComponent.Children[0] as LogGroup;
+                    dGroup.LogFiles.Add(new LogFile(file, dGroup));
+                    continue;
+
+                }
+
 
                 if (fileNameParts.Length == 2)
                 {
@@ -360,6 +382,9 @@ namespace PlantSCADA_Logviewer
             TreeElems.Add(clientComponent);
             foreach (var elem in clusterMap)
                 TreeElems.Add(elem.Value);
+
+            if (deplCluster!=null)
+                TreeElems.Add(deplCluster);
 
             SetFolderEnabled = false;
         }

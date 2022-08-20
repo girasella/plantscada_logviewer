@@ -20,8 +20,8 @@ public static class ComponentDictionary
         {"alarm", ComponentType.Alarm },
         {"trend", ComponentType.Trend },
         {"report", ComponentType.Report },
-        {"se.asb.Deployment.server.windowsservice",ComponentType.DeploymentServer },
-        {"se.asb.Deployment.node.windowsservice",ComponentType.DeploymentClient },
+        {"server",ComponentType.DeploymentServer },
+        {"node",ComponentType.DeploymentClient },
         {"idetracelog", ComponentType.Studio }
     };
 
