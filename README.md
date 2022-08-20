@@ -1,5 +1,5 @@
-# plantscada_logviewer
-PlantSCADA Logviewer is a tool to analyze Citect/Plant SCADA log files directory.
+# Plant SCADA Log Viewer
+Plant SCADA Log Viewer is a tool to analyze Citect/Plant SCADA log files directory.
 It requires .NET Framework 6.0 to work. (https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
 
 Usage:
@@ -13,3 +13,7 @@ Usage:
 - Set up filter mode and type a filter string, then press Enter or click "Set Filter" to filter log messages. 
 
 ![Screenshot Sample](Screenshot_Sample.png "Screenshot Sample")
+
+
+
+The [application icon](https://freeicons.io/office-and-business-4/document-search-verified-research-business-icon-111958) by [ColourCreatype](https://freeicons.io/profile/5790) is used under [CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/3.0/) license. Icon colors have been changed.
