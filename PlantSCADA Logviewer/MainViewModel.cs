@@ -276,7 +276,7 @@ namespace PlantSCADA_Logviewer
             IEnumerable<FileInfo> files = logsDirectory.EnumerateFiles();
 
             LogComponent clientComponent = new LogComponent("Client", ComponentType.Client, null);
-
+            TreeElems.Clear();
             foreach (FileInfo file in files)
             {
                 if (file.Extension != ".dat" && file.Extension != ".log" && file.Extension != ".bak")
@@ -294,8 +294,22 @@ namespace PlantSCADA_Logviewer
 
                 if (fileNameParts.Length == 2)
                 {
+                    if (fName == "idetracelog.dat")
+                    {
+                        INodeLog studioComponent = TreeElems.FirstOrDefault(x => x.Name == "Studio");                        
+                        if (studioComponent == null)
+                        {
+                            studioComponent = new LogComponent("Studio", ComponentType.Studio, null);
+                            LogGroup studioGroup = new LogGroup("tracelog",(LogType) lType, studioComponent);
+                            studioComponent.AddChild(studioGroup);
+                            TreeElems.Add(studioComponent);
+                        }
+                        LogGroup sGroup = studioComponent.Children[0] as LogGroup;
+                        sGroup.LogFiles.Add(new LogFile(file, sGroup));
+                        continue;
+                    }
+                        
                     LogGroup cGroup = (LogGroup)clientComponent.Children.FirstOrDefault(x => ((LogGroup)x).Type == lType);
-
 
                     if (cGroup == null)
                     {
@@ -306,6 +320,7 @@ namespace PlantSCADA_Logviewer
                     cGroup.LogFiles.Add(lgFile);
                     continue;
                 }
+                
                 if (fileNameParts.Length != 5)
                     continue;
 
@@ -340,7 +355,7 @@ namespace PlantSCADA_Logviewer
                 LogFile lFile = new LogFile(file, currentGroup);
                 currentGroup.LogFiles.Add(lFile);
             }
-            TreeElems.Clear();
+            
 
             TreeElems.Add(clientComponent);
             foreach (var elem in clusterMap)

@@ -15,6 +15,7 @@ public class LogTypeDictionary
     {
         {"syslog", LogType.Sys },
         {"tracelog", LogType.Trace },
+        {"idetracelog",LogType.Trace },
         {"debug", LogType.Debug },
         {"reloadlog", LogType.Reload },
         {"params", LogType.Params },
@@ -27,4 +28,6 @@ public class LogTypeDictionary
     {
         return _logTypeDict.ContainsKey(par) ? _logTypeDict[par] : null;
     }
+
+
 }

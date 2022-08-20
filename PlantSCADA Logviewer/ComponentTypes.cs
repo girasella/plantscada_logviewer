@@ -5,7 +5,10 @@ public enum ComponentType {
     IOServer,
     Alarm,
     Trend,
-    Report
+    Report,
+    DeploymentServer,
+    DeploymentClient,
+    Studio
 }
 
 public static class ComponentDictionary
@@ -16,7 +19,10 @@ public static class ComponentDictionary
         {"ioserver", ComponentType.IOServer },
         {"alarm", ComponentType.Alarm },
         {"trend", ComponentType.Trend },
-        {"report", ComponentType.Report }
+        {"report", ComponentType.Report },
+        {"se.asb.Deployment.server.windowsservice",ComponentType.DeploymentServer },
+        {"se.asb.Deployment.node.windowsservice",ComponentType.DeploymentClient },
+        {"idetracelog", ComponentType.Studio }
     };
 
     public static ComponentType? GetComponent (string name)
