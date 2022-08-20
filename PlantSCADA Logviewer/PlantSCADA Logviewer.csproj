@@ -7,7 +7,12 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>True</UseWindowsForms>
+    <ApplicationIcon>PlantSCADA LogViewer.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="PlantSCADA LogViewer.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Update="Settings.Designer.cs">

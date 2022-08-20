@@ -16,7 +16,9 @@ TODO:
 Add "Open file" option for groups
 Add "Export to CSV" option on datagrid
 Add "Exclude/include filter on this message" on datagrid
-Add copy to clipboard option on datagrid
 Add search message option on datagrid
 Fix horizontal scroll on datagrid
 Fix tree building method for multiple files (logarchive)
+
+
+Icon Attribution: https://freeicons.io/office-and-business-4/document-search-verified-research-business-icon-111958

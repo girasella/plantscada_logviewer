@@ -121,6 +121,7 @@
             <Button Grid.Column="4"
                     x:Name="btn_Set_Copy"
                     Command="{Binding SetFolder}"
+                    IsEnabled="{Binding SetFolderEnabled}"
                     Content="Set Folder" />
             <StackPanel Grid.Row="1"
                         Grid.Column="0"

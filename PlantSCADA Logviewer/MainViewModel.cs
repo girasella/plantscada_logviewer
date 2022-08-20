@@ -49,6 +49,10 @@ namespace PlantSCADA_Logviewer
             filterPredicate = new Predicate<object>(ApplyStringFilter);
         }
 
+        bool _setFolderEnabled = true;
+        bool _applyTimeRangeEnabled = true;
+
+
         static MainViewModel _instance;
 
         string _logsPath = "", _filterArgument = "";
@@ -116,6 +120,9 @@ namespace PlantSCADA_Logviewer
             set
             {
                 _logsPath = value;
+
+                SetFolderEnabled = true;
+
                 OnPropertyChanged();
             }
         }
@@ -213,6 +220,30 @@ namespace PlantSCADA_Logviewer
         }
 
         public CollectionViewSource ViewSource { get => _viewSource; set => _viewSource = value; }
+        public bool SetFolderEnabled
+        {
+            get
+            {
+                return _setFolderEnabled;
+            }
+            set
+            {
+                _setFolderEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool ApplyTimeRangeEnabled
+        {
+            get
+            {
+                return _applyTimeRangeEnabled;
+            }
+            set
+            {
+                _applyTimeRangeEnabled = value;
+                OnPropertyChanged();
+            }
+        }
 
         void BrowseFoldersExec()
         {
@@ -315,6 +346,7 @@ namespace PlantSCADA_Logviewer
             foreach (var elem in clusterMap)
                 TreeElems.Add(elem.Value);
 
+            SetFolderEnabled = false;
         }
 
         internal void TextFilterExec()
