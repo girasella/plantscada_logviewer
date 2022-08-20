@@ -275,7 +275,7 @@ namespace PlantSCADA_Logviewer
 
             IEnumerable<FileInfo> files = logsDirectory.EnumerateFiles();
 
-            LogComponent clientComponent = new LogComponent("Client", ComponentType.Client, null);
+            LogComponent clientComponent = null;
             INodeLog deplCluster = null;
             TreeElems.Clear();
             foreach (FileInfo file in files)
@@ -330,7 +330,7 @@ namespace PlantSCADA_Logviewer
                         sGroup.LogFiles.Add(new LogFile(file, sGroup));
                         continue;
                     }
-                        
+                    if (clientComponent == null) clientComponent = new LogComponent("Client", ComponentType.Client, null);
                     LogGroup cGroup = (LogGroup)clientComponent.Children.FirstOrDefault(x => ((LogGroup)x).Type == lType);
 
                     if (cGroup == null)
@@ -379,12 +379,11 @@ namespace PlantSCADA_Logviewer
             }
             
 
-            TreeElems.Add(clientComponent);
+            if (clientComponent!=null) TreeElems.Add(clientComponent);
+            if (deplCluster != null) TreeElems.Add(deplCluster);
+
             foreach (var elem in clusterMap)
                 TreeElems.Add(elem.Value);
-
-            if (deplCluster!=null)
-                TreeElems.Add(deplCluster);
 
             SetFolderEnabled = false;
         }
