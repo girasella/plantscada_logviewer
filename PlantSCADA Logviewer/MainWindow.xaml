@@ -135,7 +135,8 @@
                             HorizontalAlignment="Left">
                     <DatePicker Name="dp_dateStart"
                                 Height="30"
-                                SelectedDate="{Binding TimeRange.DateStart.SelectedDay}" />
+                                SelectedDate="{Binding TimeRange.DateStart.SelectedDay}"
+                                SelectedDateChanged="DateChanged"/>
                     <Border BorderThickness="1"
                             BorderBrush="Gray"
                             VerticalAlignment="Center">
@@ -143,11 +144,13 @@
                                     Height="28">
                             <TextBox Text="{Binding TimeRange.DateStart.Hours, StringFormat='00'}"
                                      Style="{StaticResource timeTextBox}"
-                                     Tag="H" />
+                                     Tag="H"
+                                     TextChanged="TimeChanged" />
                             <TextBlock Style="{StaticResource timeSeparator}" />
                             <TextBox Text="{Binding TimeRange.DateStart.Minutes, StringFormat='00'}"
                                      Style="{StaticResource timeTextBox}"
-                                     Tag="M" />
+                                     Tag="M"
+                                     TextChanged="TimeChanged" />
                         </StackPanel>
                     </Border>
                 </StackPanel>
@@ -162,17 +165,20 @@
                 <StackPanel Orientation="Horizontal">
                     <DatePicker Name="dp_dateEnd"
                                 Height="30"
-                                SelectedDate="{Binding TimeRange.DateEnd.SelectedDay}" />
+                                SelectedDate="{Binding TimeRange.DateEnd.SelectedDay}" 
+                                SelectedDateChanged="DateChanged"/>
                     <Border BorderBrush="Gray"
                             BorderThickness="1">
                         <StackPanel Orientation="Horizontal"
                                     Height="28">
                             <TextBox Text="{Binding TimeRange.DateEnd.Hours, StringFormat='00'}"
                                      Style="{StaticResource timeTextBox}"
+                                     TextChanged="TimeChanged"
                                      Tag="H" />
                             <TextBlock Style="{StaticResource timeSeparator}" />
                             <TextBox Text="{Binding TimeRange.DateEnd.Minutes, StringFormat='00'}"
                                      Style="{StaticResource timeTextBox}"
+                                     TextChanged="TimeChanged"
                                      Tag="M" />
                         </StackPanel>
                     </Border>
@@ -204,6 +210,7 @@
                     Grid.Column="4"
                     Name="btn_Set"
                     Command="{Binding ApplyTimeRange}"
+                    IsEnabled="{Binding ApplyTimeRangeEnabled}"
                     VerticalAlignment="Bottom">
                 Set Time Range
             </Button>

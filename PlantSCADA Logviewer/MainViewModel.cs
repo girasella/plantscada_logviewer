@@ -417,6 +417,8 @@ namespace PlantSCADA_Logviewer
         private void ApplyTimeRangeExec()
         {
             LogViewer.ApplyTimeRange(TimeRange.DateStart.Timestamp, TimeRange.DateEnd.Timestamp);
+            ApplyTimeRangeEnabled = false;
+
             ViewSource.View.Refresh();
 
             Settings.Default.DateStart = TimeRange.DateStart.Timestamp.ToString("yyyy-MM-dd HH:mm");

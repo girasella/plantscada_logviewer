@@ -56,5 +56,22 @@ namespace PlantSCADA_Logviewer
             string s = mitem.Tag.ToString();
             Clipboard.SetText(s);
         }
+
+        private void DateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DateTimeChanged();
+        }
+
+        private void TimeChanged(object sender, TextChangedEventArgs e)
+        {
+            DateTimeChanged();
+        }
+
+        private void DateTimeChanged()
+        {
+            MainViewModel mvm = this.DataContext as MainViewModel;
+            mvm.ApplyTimeRangeEnabled = true;
+        }
+        
     }
 }
