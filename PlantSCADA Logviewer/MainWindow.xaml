@@ -273,9 +273,9 @@
                       ItemsSource="{Binding TreeElems}"
                       MinWidth="150"
                       Margin="5,0,0,0">
-                <TreeView.ItemTemplate>
+                <TreeView.Resources>
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}"
-                                              DataType="{x:Type local:INodeLog}">
+                                              DataType="{x:Type local:LogCluster}">
                         <StackPanel Orientation="Horizontal">
                             <CheckBox IsChecked="{Binding Selected}" />
                             <TextBlock Text="{Binding Name}" />
@@ -283,7 +283,41 @@
 
 
                     </HierarchicalDataTemplate>
-                </TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children}"
+                                              DataType="{x:Type local:LogComponent}">
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox IsChecked="{Binding Selected}" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+
+
+                    </HierarchicalDataTemplate>
+                    <DataTemplate DataType="{x:Type local:LogGroup}">
+                        <StackPanel Orientation="Horizontal" >
+                            <StackPanel.ContextMenu>
+                                <ContextMenu ItemsSource="{Binding LogFiles}">
+                                    <ContextMenu.ItemContainerStyle>
+                                        <Style TargetType="MenuItem">
+                                            <Setter Property="Command"
+                                                    Value="{Binding OpenFile}" />
+                                        </Style>
+                                    </ContextMenu.ItemContainerStyle>
+                                    <ContextMenu.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding FileName}" />
+                                        </DataTemplate>
+                                    </ContextMenu.ItemTemplate>
+                                </ContextMenu>
+                               
+
+                            </StackPanel.ContextMenu>
+                            <CheckBox IsChecked="{Binding Selected}" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+
+                </TreeView.Resources>
+
             </TreeView>
             <GridSplitter Grid.Row="0"
                           Grid.Column="0"

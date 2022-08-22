@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Windows.Input;
+using System.Diagnostics;
 
 namespace PlantSCADA_Logviewer
 {
@@ -14,15 +16,20 @@ namespace PlantSCADA_Logviewer
         FileInfo _file;
         List<LogEntry> _logEntries;
         LogGroup _source;
+        ICommand _openFile;
 
         public LogFile(FileInfo file, LogGroup logGroup)
         {
-            FileName = file.FullName;
             _file = file;
-            Source = logGroup;      
+            Source = logGroup;
+            _openFile = new DelegateCommand(() => openFile());
             
         }
 
+        public ICommand OpenFile
+        {
+            get { return _openFile; }
+        }
         public IEnumerable<LogEntry> Load(DateTime start, DateTime end)
         {
             if (LogEntries == null)
@@ -63,7 +70,7 @@ namespace PlantSCADA_Logviewer
         string _fileName;
         DateTime _start, _end;
 
-        public string FileName { get => _fileName; set => _fileName = value; }
+        public string FileName { get => _file.Name; }
         public DateTime Start { get => _start; set => _start = value; }
         public DateTime End { get => _end; set => _end = value; }
         public LogGroup Source { get => _source; set => _source = value; }
@@ -78,6 +85,14 @@ namespace PlantSCADA_Logviewer
             }
             set => _logEntries = value; 
        
+        }
+
+        void openFile()
+        {
+            ProcessStartInfo psi = new ProcessStartInfo();
+            psi.FileName = _file.FullName;
+            psi.UseShellExecute = true;
+            Process.Start(psi);
         }
     }
 }
