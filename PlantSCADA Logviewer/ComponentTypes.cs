@@ -6,6 +6,7 @@ public enum ComponentType {
     Alarm,
     Trend,
     Report,
+    OpcDaServer,
     DeploymentServer,
     DeploymentClient,
     Studio
@@ -20,6 +21,7 @@ public static class ComponentDictionary
         {"alarm", ComponentType.Alarm },
         {"trend", ComponentType.Trend },
         {"report", ComponentType.Report },
+        {"opcdaserver", ComponentType.OpcDaServer },
         {"server",ComponentType.DeploymentServer },
         {"node",ComponentType.DeploymentClient },
         {"idetracelog", ComponentType.Studio }

@@ -276,7 +276,7 @@ namespace PlantSCADA_Logviewer
             IEnumerable<FileInfo> files = logsDirectory.EnumerateFiles();
 
             LogComponent clientComponent = null;
-            INodeLog deplCluster = null;
+            INodeLog deplCluster = null, opcdaCluster = null;
             TreeElems.Clear();
             foreach (FileInfo file in files)
             {
@@ -310,9 +310,30 @@ namespace PlantSCADA_Logviewer
                     LogGroup dGroup = deplComponent.Children[0] as LogGroup;
                     dGroup.LogFiles.Add(new LogFile(file, dGroup));
                     continue;
-
                 }
 
+                if (fName.Contains(".opcdaserver."))
+                {
+                    string componentName = fileNameParts[2];
+                    string componentType = "opcdaserver";
+                    if (opcdaCluster == null) opcdaCluster = new LogCluster("OPC DA Servers");
+
+                    INodeLog opcdaComponent = opcdaCluster.Children.FirstOrDefault(x => x.Name == componentName) as LogComponent;
+                    if (opcdaComponent == null)
+                    {
+                        opcdaComponent = new LogComponent(componentName, (ComponentType)ComponentDictionary.GetComponent(componentType), opcdaCluster);
+                        opcdaCluster.AddChild(opcdaComponent);
+                    }
+                    LogGroup opcdaGroup = (LogGroup)opcdaComponent.Children.FirstOrDefault(x => ((LogGroup)x).Type == lType);
+                    if (opcdaGroup == null)
+                    {
+                        opcdaGroup = new LogGroup(logGroupType, (LogType)lType, opcdaComponent);
+                        opcdaComponent.Children.Add(opcdaGroup);
+                    }
+                    opcdaGroup.LogFiles.Add(new LogFile(file, opcdaGroup));
+                    continue;
+
+                }
 
                 if (fileNameParts.Length == 2)
                 {
@@ -381,7 +402,7 @@ namespace PlantSCADA_Logviewer
 
             if (clientComponent!=null) TreeElems.Add(clientComponent);
             if (deplCluster != null) TreeElems.Add(deplCluster);
-
+            if (opcdaCluster != null) TreeElems.Add(opcdaCluster);
             foreach (var elem in clusterMap)
                 TreeElems.Add(elem.Value);
 
