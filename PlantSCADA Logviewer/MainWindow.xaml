@@ -332,7 +332,9 @@
                           AutoGenerateColumns="False"
                           HorizontalAlignment="Stretch"
                           VerticalAlignment="Stretch"
-                          DockPanel.Dock="Top">
+                          DockPanel.Dock="Top" 
+                          ClipboardCopyMode="ExcludeHeader"
+                          SelectionUnit="Cell">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Timestamp"
                                             Binding="{Binding Date, StringFormat='yyyy-MM-dd HH:mm:ss.fff zzz'}"
@@ -344,21 +346,13 @@
                                             FontFamily="Consolas" />
                         <DataGridTemplateColumn Width="*"
                                                 Header="Message"
-                                                IsReadOnly="True">
+                                                IsReadOnly="True"
+                                                ClipboardContentBinding="{Binding Message}">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Message}"
                                                FontFamily="Consolas"
                                                ToolTip="{Binding Message}">
-                                        <TextBlock.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem Header="Copy"
-                                                          Click="MenuItem_Click"
-                                                          Tag="{Binding Message}" />
-                                            </ContextMenu>
-
-                                        </TextBlock.ContextMenu>
-                                        
                                     </TextBlock>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
