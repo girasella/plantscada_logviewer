@@ -12,7 +12,7 @@ Usage:
 
 - Set up filter mode and type a filter string, then press Enter or click "Set Filter" to filter log messages. 
 
-![Screenshot Sample](Screenshot_Sample.png "Screenshot Sample")
+![Screenshot Sample](Source/Screenshot_Sample.png "Screenshot Sample")
 
 
 
